@@ -1,0 +1,53 @@
+{% load static %}
+{% load manifest %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% block head %}
+        {% block meta %}
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+            <!-- Meta, title, CSS, favicons, etc. -->
+            <meta charset="utf-8">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+        {% endblock meta %}
+
+        <title>Snipp-Labs| {% block title %}{% endblock %}</title>
+
+        <link rel="shortcut icon" type="image/x-icon" href="{% static 'favicon.ico' %}">
+
+        <link href="https://use.fontawesome.com/releases/v5.15.1/css/all.css" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
+        <link href="{% manifest 'base.css' %}" rel="stylesheet" />
+
+        {% block stylesheets %}
+        {% endblock stylesheets %}
+
+    {% endblock head %}
+</head>
+
+<body content="text/html">
+
+    {% block body %}
+
+       
+
+        <div class="container-fluid">
+            {% include "app/navbar.html" %}
+
+            {% block content %}
+            {% endblock content %}
+        </div>
+
+    {% endblock body %}
+
+    <script type="text/javascript" src="{% manifest 'runtime.js' %}" ></script>
+    <script type="text/javascript" src="{% manifest 'vendor.js' %}" ></script>
+    <script type="text/javascript" src="{% manifest 'base.js' %}" ></script>
+    
+    {% block javascript_footer %}
+    {% endblock javascript_footer %}
+
+</body>
+</html>

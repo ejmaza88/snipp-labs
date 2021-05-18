@@ -1,0 +1,13 @@
+*.pyc
+__pycache__
+.idea
+
+
+snipps/snipps/local_settings.py
+
+
+node_modules/
+manifest.dev.json
+dev_bundles/
+npm-debug.log
+snipps/db.sqlite3

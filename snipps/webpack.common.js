@@ -11,7 +11,8 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 module.exports = {
     entry: {
         base: './assets/js/base.js',
-        linqs: './assets/js/linqs.js',
+        linqs: './assets/js/linqs/linqs.js',
+        snippets: './assets/js/snippets/snippets.js',
 
         vendor: [
           'react',

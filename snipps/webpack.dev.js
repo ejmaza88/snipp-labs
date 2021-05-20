@@ -8,12 +8,12 @@ const { WebpackManifestPlugin } = require('webpack-manifest-plugin');
 module.exports = merge(common, {
     devServer: {
         // compress: true,
-        // allowedHosts: ['localhost', '127.0.0.1'],
+        // allowedHosts: ['*'],
         // publicPath: 'http://localhost:7654/assets/bundles/',
+        // host: '0.0.0.0',
         port: 7654,
         headers: { "Access-Control-Allow-Origin": "*" },
         writeToDisk: (filePath) => /\.json$/.test(filePath),  // save a copy of the manifest JSON file to disk
-
     },
     devtool: 'cheap-module-source-map',
     output: {

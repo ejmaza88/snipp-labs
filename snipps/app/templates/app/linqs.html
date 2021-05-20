@@ -1,5 +1,6 @@
 {% extends 'app/base.html' %}
 {% load manifest %}
+{% load js_data %}
 
 
 {% block title %} Linqs {% endblock title %}
@@ -23,5 +24,6 @@
 
 {% block javascript_footer %}
     {{ block.super }}
+    {{ init_js_data | js_data }}
     <script type="text/javascript" src="{% manifest 'linqs.js' %}" ></script>
 {% endblock %}

@@ -10,6 +10,7 @@ urlpatterns = [
 
     # Linqs
     path('linqs/', views.linqs, name='linqs'),
+    path('api/linqs/add_category', views.add_category, name='add-category'),
     # Linqs API
 
     # Snippets

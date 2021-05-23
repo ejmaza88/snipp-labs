@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { observer } from "mobx-react-lite";
 import { MDBBtn, MDBInput } from 'mdb-react-ui-kit';
+import { addCategoryApi } from "../../helpers/network";
 import FadeIn from 'react-fade-in';
 
 
@@ -38,10 +39,11 @@ export default function AddCategory(props) {
 }
 
 
+// Add Form Component
 const AddForm = observer( (props) => {
 
   const { categoryStore } = props.store
-
+  const { urlApi } = props
   // hooks
   const [name, setName] = useState('')
 
@@ -50,6 +52,7 @@ const AddForm = observer( (props) => {
     setName(e.target.value)
   }
 
+  // get item index so it can be inserted in the array
   const itemIndex = (itemName) => {
     const items = categoryStore.items.map(i => i.name)
     items.push(itemName)
@@ -61,10 +64,12 @@ const AddForm = observer( (props) => {
   const submitForm = (e) => {
     e.preventDefault();
 
-    const newItem = {id: Math.random(), name: name, new: true}
+    const params = {name: name, new: true}
     const newItemIndex = itemIndex(name)
 
-    categoryStore.newItem(newItemIndex, newItem)
+    addCategoryApi(urlApi, params, (item) => {
+      categoryStore.newItem(newItemIndex, item)
+    })
 
     props.toggle()
   }

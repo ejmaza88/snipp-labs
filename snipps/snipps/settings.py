@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'rest_framework',
     'manifest_loader',
 
     'app',
@@ -102,6 +103,8 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+CSRF_COOKIE_NAME = "XSRF-TOKEN"
 
 LOGIN_URL = '/login'
 LOGIN_REDIRECT_URL = '/'

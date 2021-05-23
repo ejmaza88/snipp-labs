@@ -30,7 +30,7 @@ function App(props) {
 
           <MDBCol sm={12} md={2} lg={2}>
             <LinqSearch />
-            <AddCategory store={store} />
+            <AddCategory store={store} urlApi={props.addCategoryAPI} />
             <CategoryList store={store} />
           </MDBCol>
 

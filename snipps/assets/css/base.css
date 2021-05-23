@@ -1,4 +1,27 @@
 body {
     font-family: Roboto, Helvetica, Arial, sans-serif;
     /* background-color: rgb(255, 254, 254); */
-  }
+}
+
+/* Item Delete */
+.del-item {
+    cursor: pointer;
+}
+.del-item:hover {
+    color: #ff0000;
+    /*text-shadow: 0 0 5px #ff0000;*/
+}
+.del-item:active {
+    /*color: #8b0000;*/
+    color: #e50000;
+    /*text-shadow: 0 0 5px #7d0000;*/
+    text-shadow: 0 0 5px #990000;
+}
+
+/* Item */
+.item {
+    cursor: pointer;
+}
+.item:active {
+    text-shadow: 0 0 10px silver;
+}

@@ -12,9 +12,15 @@ def linqs(request):
     context = {
         'init_js_data': {
             'categories': [
-                {'id': 1, 'name': 'AWS'},
-                {'id': 1, 'name': 'AWS'},
-                {'id': 1, 'name': 'AWS'},
+                {'id': 1, 'name': 'AWS', 'new': False},
+                {'id': 2, 'name': 'Babel', 'new': False},
+                {'id': 3, 'name': 'Bootstrap', 'new': False},
+                {'id': 4, 'name': 'DevOps', 'new': True},
+                {'id': 5, 'name': 'Django', 'new': False},
+                {'id': 6, 'name': 'Docker', 'new': True},
+                {'id': 7, 'name': 'Git', 'new': False},
+                {'id': 8, 'name': 'Linux', 'new': False},
+                {'id': 9, 'name': 'Python', 'new': False},
             ]
         }
     }

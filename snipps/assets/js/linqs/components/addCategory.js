@@ -64,7 +64,7 @@ const AddForm = observer( (props) => {
   const submitForm = (e) => {
     e.preventDefault();
 
-    const params = {name: name, new: true}
+    const params = {name: name, new_item: true}
     const newItemIndex = itemIndex(name)
 
     addCategoryApi(urlApi, params, (item) => {

@@ -1,4 +1,4 @@
-import { makeObservable, observable, computed, action, flow } from "mobx"
+import { makeObservable, observable, computed, action, flow, toJS } from "mobx"
 
 export default class CategoryStore {
     items = []
@@ -25,8 +25,16 @@ export default class CategoryStore {
 
     newItem = (index, item) => this.items.splice(index, 0, item)
 
-    updateActiveItem = (itemId) => {
-        this.activeItem = itemId
+    updateActiveItem = (itemIndex) => {
+        const item = this.items[itemIndex]
+
+        if (item.new_item) {
+           const { new_item, ...others} = item
+           const updatedItem = {new_item: false, ...others}
+           this.items.splice(itemIndex, 1, updatedItem)
+        }
+
+        this.activeItem = itemIndex
     }
 
     deleteItem = (itemIndex) => this.items.splice(itemIndex, 1)

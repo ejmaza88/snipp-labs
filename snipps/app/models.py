@@ -29,7 +29,7 @@ class ArchiveModel(models.Model):
 
 class Category(ArchiveModel):
     name = models.CharField(max_length=50)
-    new = models.BooleanField(default=False)
+    new_item = models.BooleanField(default=False)
     timestamp = models.DateTimeField(auto_now_add=True)
     last_modified = models.DateTimeField(auto_now=True)
 

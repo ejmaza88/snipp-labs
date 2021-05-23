@@ -34,7 +34,7 @@ def linqs(request):
 @require_POST
 def add_category(request):
     data = json.loads(request.body)
-    instance = Category.objects.create(name=data.get('name'), new=data.get('new'))
+    instance = Category.objects.create(name=data.get('name'), new_item=data.get('new_item'))
     context = {
         'success': True,
         'obj': CategorySerializer(instance).data

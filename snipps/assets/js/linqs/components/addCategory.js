@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { observer } from "mobx-react-lite";
 import { MDBBtn, MDBInput } from 'mdb-react-ui-kit';
-import { addCategoryApi } from "../../helpers/network";
+import { addCategory } from "../../helpers/network";
 import FadeIn from 'react-fade-in';
 
 
@@ -43,7 +43,7 @@ export default function AddCategory(props) {
 const AddForm = observer( (props) => {
 
   const { categoryStore } = props.store
-  const { urlApi } = props
+  const { addCategoryAPI } = props
   // hooks
   const [name, setName] = useState('')
 
@@ -67,7 +67,7 @@ const AddForm = observer( (props) => {
     const params = {name: name, new_item: true}
     const newItemIndex = itemIndex(name)
 
-    addCategoryApi(urlApi, params, (item) => {
+    addCategory(addCategoryAPI, params, (item) => {
       categoryStore.newItem(newItemIndex, item)
     })
 

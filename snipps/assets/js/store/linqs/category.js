@@ -26,15 +26,9 @@ export default class CategoryStore {
     newItem = (index, item) => this.items.splice(index, 0, item)
 
     updateActiveItem = (itemIndex) => {
-        const item = this.items[itemIndex]
-
-        if (item.new_item) {
-           const { new_item, ...others} = item
-           const updatedItem = {new_item: false, ...others}
-           this.items.splice(itemIndex, 1, updatedItem)
-        }
-
-        this.activeItem = itemIndex
+        const { new_item, ...others} = this.items[itemIndex]
+        if (new_item) this.items.splice(itemIndex, 1, {new_item: false, ...others})  // remove css
+        this.activeItem = itemIndex // update active (selected category)
     }
 
     deleteItem = (itemIndex) => this.items.splice(itemIndex, 1)

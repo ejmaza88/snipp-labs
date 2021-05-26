@@ -1,7 +1,7 @@
 import React from 'react';
-import { confirmAlert } from 'react-confirm-alert'
 import { removeNewItemClass } from "../../helpers/helpers";
 import { getCategoryLinqs, categoryDelete } from "../../helpers/network";
+import { confirmation } from "../../helpers/helpers";
 import { toJS } from "mobx";
 
 
@@ -10,64 +10,29 @@ import 'react-confirm-alert/src/react-confirm-alert.css';
 
 export default function CategoryItem( props) {
 
-  const { item, active, itemIndex, makeCategoryActive, deleteCategory, getCategoryLinqsAPI, deleteCategoryAPI } = props
-  const newItemIdentifier = 'text-info'
+  const { item, active, itemIndex, makeCategoryActive, deleteCategory } = props
+  const newItemIdentifier = 'text-warning'
 
+  // add a new category
   const activeCategory = () => {
     if (item.new_item) removeNewItemClass(`category_${itemIndex}`, newItemIdentifier)
     const params = {'category_id': item.id, 'is_new': item.new_item}
 
-    getCategoryLinqs(getCategoryLinqsAPI, params, () => {
-
-    })
+    getCategoryLinqs(params, (data) => console.log(data))
     makeCategoryActive(itemIndex)
   }
 
+  // delete an existing category
   const delCategory = () => {
     const params = {'category_id': item.id}
 
-    confirmAlert({
-      title: '',
-      message: 'Are you sure?',
-      buttons: [
-        {
-          label: 'Yes',
-          onClick: () => {
-            console.log('deleted category')
-          }
-        },
-        {
-          label: 'No',
-          onClick: () => {
-            console.log('cancel')
-          }
-        }
-      ],
-      closeOnEscape: true,
-      closeOnClickOutside: true,
-      // childrenElement: () => <div><h3>Test</h3></div>,
-      // customUI: (props) => {
-      //   console.log(props)
-      //   const onBtnClick = () => {
-      //     props.buttons[0].onClick()
-      //   }
-      //   return (
-      //     <>
-      //       <div className='border border-1'>Custom UI</div>
-      //       <button>Yes</button>
-      //       <button onClick={onBtnClick}>No</button>
-      //     </>
-      //   )
-      // },
-      // afterClose: () => console.log('confirm closed'),
-      // onClickOutside: () => console.log('clicked outside'),
-      // onKeypressEscape: () => console.log('scape key'),
-      // overlayClassName: 'overlay-custom-class-name'
-    })
+    confirmation(
+      `Are you sure you want to delete '${item.name}'`,
+      () => {
+        categoryDelete(params, () => deleteCategory(itemIndex))
+      }
+    )
 
-    // categoryDelete(deleteCategoryAPI, params, () => {
-    //   deleteCategory(itemIndex)
-    // })
   }
 
   return (

@@ -7,7 +7,6 @@ import CategoryItem from "./categoryItem";
 const CategoryList = observer( (props) => {
 
   const { categoryStore } = props.store
-  const { getCategoryLinqsAPI, deleteCategoryAPI } = props
 
   const makeCategoryActive = (index) => categoryStore.updateActiveItem(index)
 
@@ -15,20 +14,20 @@ const CategoryList = observer( (props) => {
 
   return (
     <>
-      {categoryStore.items.map((i, index) => {
-        return (
-          <CategoryItem
-            key={i.id}
-            item={i}
-            itemIndex={index}
-            active={index === categoryStore.activeItem}
-            makeCategoryActive={makeCategoryActive}
-            deleteCategory={deleteCategory}
-            getCategoryLinqsAPI={getCategoryLinqsAPI}
-            deleteCategoryAPI={deleteCategoryAPI}
-          />
-        )
-      })}
+      <div className='mb-3'>
+        {categoryStore.items.map((i, index) => {
+          return (
+            <CategoryItem
+              key={i.id}
+              item={i}
+              itemIndex={index}
+              active={index === categoryStore.activeItem}
+              makeCategoryActive={makeCategoryActive}
+              deleteCategory={deleteCategory}
+            />
+          )
+        })}
+      </div>
     </>
   )
 })

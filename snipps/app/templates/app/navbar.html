@@ -37,10 +37,11 @@
 
         <ul class="navbar-nav ms-auto">
           <li class="nav-item">
-            <a class="nav-link {% if '/linqs/' in request.path %} text-primary border-bottom border-primary pb-0 {% endif%}" aria-current="page" href="{% url 'app:linqs' %}">LinQs</a>
+            <a class="nav-link {% if '/linqs/' in request.path %} text-primary pb-0 {% endif%}" aria-current="page" href="{% url 'app:linqs' %}">LinQs</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link {% if '/snippets/' in request.path %} text-primary border-bottom border-primary pb-0 {% endif%}" href="{% url 'app:snippets' %}">Snippets</a>
+            <a class="nav-link {% if '/snippets/' in request.path %} text-primary pb-0 {% endif%}" href="{% url 'app:snippets' %}">Snippets</a>
+{#            <a class="nav-link {% if '/snippets/' in request.path %} text-primary border-bottom border-primary pb-0 {% endif%}" href="{% url 'app:snippets' %}">Snippets</a>#}
           </li>
         </ul>
 

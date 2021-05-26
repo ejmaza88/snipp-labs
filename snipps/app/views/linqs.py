@@ -21,10 +21,7 @@ def linqs(request):
 
     context = {
         'init_js_data': {
-            'categories': CategorySerializer(categories, many=True).data,
-            'addCategoryAPI': reverse('app:add-category'),
-            'getCategoryLinqsAPI': reverse('app:get-category-linqs'),
-            'deleteCategoryAPI': reverse('app:archive-category')
+            'categories': CategorySerializer(categories, many=True).data
         }
     }
 
@@ -72,6 +69,6 @@ def category_linqs(request):
     if data.get('is_new'):
         Category.objects.filter(pk=data.get('category_id')).update(new_item=False)
 
-    return JsonResponse({'data': 'all linqs'})
+    return JsonResponse({'linqs': 'all linqs', 'success': True})
 
 

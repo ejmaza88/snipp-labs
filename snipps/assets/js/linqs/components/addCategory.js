@@ -43,7 +43,6 @@ export default function AddCategory(props) {
 const AddForm = observer( (props) => {
 
   const { categoryStore } = props.store
-  const { addCategoryAPI } = props
   // hooks
   const [name, setName] = useState('')
 
@@ -67,7 +66,7 @@ const AddForm = observer( (props) => {
     const params = {name: name, new_item: true}
     const newItemIndex = itemIndex(name)
 
-    addCategory(addCategoryAPI, params, (item) => {
+    addCategory(params, (item) => {
       categoryStore.newItem(newItemIndex, item)
     })
 

@@ -16,6 +16,7 @@ class ArchiveModel(models.Model):
     """
     For models that will never be deleted, use an archive flag to hide them from normal operations.
     """
+
     archived = models.BooleanField(default=False)
 
     # Manager objs
@@ -28,8 +29,13 @@ class ArchiveModel(models.Model):
 
 
 class Category(ArchiveModel):
+    """
+    Category Record
+    """
+
     name = models.CharField(max_length=50)
     new_item = models.BooleanField(default=False)
+
     timestamp = models.DateTimeField(auto_now_add=True)
     last_modified = models.DateTimeField(auto_now=True)
 
@@ -43,17 +49,43 @@ class Category(ArchiveModel):
         return f'{self.name} ({self.id})'
 
 
-# class Linq(ArchiveModel):
-#     category = models.ForeignKey(Category, on_delete=models.CASCADE)
-#     label = models.CharField(max_length=50)
-#     url = models.TextField(blank=True, null=True)
-#     timestamp = models.DateTimeField(auto_now_add=True)
-#     last_modified = models.DateTimeField(auto_now=True)
-#
-#     class Meta:
-#         verbose_name = 'Linq'
-#         ordering = ['-timestamp']
-#
-#     def __str__(self):
-#         """Return a human-readable string representing a record"""
-#         return f'{self.category} - {self.label} ({self.id})'
+class LinqLabel(ArchiveModel):
+    """
+    Linq Label Record
+    """
+
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    name = models.CharField(max_length=50)
+
+    timestamp = models.DateTimeField(auto_now_add=True)
+    last_modified = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = 'Linq Label'
+        verbose_name_plural = 'Linq Labels'
+        ordering = ['-timestamp']
+
+    def __str__(self):
+        """Return a human-readable string representing a record"""
+        return f'{self.category} - {self.name} ({self.id})'
+
+
+class LinqUrl(ArchiveModel):
+    """
+    Linq URL Record
+    """
+
+    label = models.ForeignKey(LinqLabel, on_delete=models.CASCADE)
+    url = models.CharField(max_length=250)
+
+    timestamp = models.DateTimeField(auto_now_add=True)
+    last_modified = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = 'Linq Url'
+        verbose_name_plural = 'Linq Urls'
+        ordering = ['-timestamp']
+
+    def __str__(self):
+        """Return a human-readable string representing a record"""
+        return f'{self.label} - ({self.id})'

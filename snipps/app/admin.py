@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Category
+from .models import Category, LinqLabel, LinqUrl
 
 # Register your models here.
 
@@ -24,7 +24,13 @@ class CategoryAdmin(ArchivedModelAdmin):
     search_fields = ('name',)
 
 
-# @admin.register(Linq)
-# class StuffAdmin(admin.ModelAdmin):
-#     list_display = ('category', 'label', 'url')
-#     search_fields = ('category', 'label')
+@admin.register(LinqLabel)
+class LinqLabelAdmin(ArchivedModelAdmin):
+    list_display = ('category', 'name')
+    search_fields = ('category', 'name')
+
+
+@admin.register(LinqUrl)
+class LinqUrlAdmin(ArchivedModelAdmin):
+    list_display = ('label', 'url')
+    search_fields = ('label', 'url')

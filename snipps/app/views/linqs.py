@@ -1,13 +1,13 @@
 import json
 
 from django.contrib.auth.decorators import login_required
+# from django.db import connection
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
-from django.urls import reverse
 from django.views.decorators.http import require_POST, require_GET
 
 from app.models import Category
-from app.serializers import CategorySerializer
+from app.serializers import CategorySerializer, CategorySelectedSerializer
 
 
 @login_required
@@ -19,9 +19,12 @@ def home(request):
 def linqs(request):
     categories = Category.objects.all()
 
+    selected = categories.filter(pk=categories[0].id).prefetch_related('linqlabel_set', 'linqlabel_set__linqurl_set').get()
+
     context = {
         'init_js_data': {
-            'categories': CategorySerializer(categories, many=True).data
+            'categories': CategorySerializer(categories, many=True).data,
+            'initSelected': CategorySelectedSerializer(instance=selected).data
         }
     }
 
@@ -65,10 +68,16 @@ def category_linqs(request):
     """
 
     data = request.GET
+    category_id = data.get('category_id')
 
-    if data.get('is_new'):
-        Category.objects.filter(pk=data.get('category_id')).update(new_item=False)
+    category = Category.objects.filter(pk=category_id).prefetch_related('linqlabel_set', 'linqlabel_set__linqurl_set').get()
 
-    return JsonResponse({'linqs': 'all linqs', 'success': True})
+    if data.get('is_new') == 'true':
+        Category.objects.filter(pk=category_id).update(new_item=False)
+
+    return JsonResponse({
+        'CategoryLinqs': CategorySelectedSerializer(instance=category).data,
+        'success': True
+    })
 
 

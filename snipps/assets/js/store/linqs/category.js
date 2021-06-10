@@ -15,6 +15,7 @@ export default class CategoryStore {
             newItem: action,
             updateActiveItem: action,
             deleteItem: action,
+
             // double: computed,
             // increment: action,
             // fetch: flow

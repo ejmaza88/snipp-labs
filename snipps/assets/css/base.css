@@ -1,6 +1,7 @@
 body {
     font-family: Roboto, Helvetica, Arial, sans-serif;
-    /* background-color: rgb(255, 254, 254); */
+     /*background-color: rgb(255, 254, 254);*/
+     background-color: #FFFFFF;
 }
 
 /* Item Delete */
@@ -24,4 +25,21 @@ body {
 }
 .item:active {
     text-shadow: 0 0 10px silver;
+}
+
+
+/* Linq Item */
+.linq-container {
+    margin-bottom: 8px;
+    padding: 0 5px 0 5px;
+    border: 1px solid #d9d9d9;
+}
+.light-color {
+    color: #b3b3b3;
+}
+.linq-action {
+    cursor: pointer;
+}
+.linq-action:active {
+    text-shadow: 0 0 3px #bfbfbf;
 }

@@ -76,7 +76,7 @@ def category_linqs(request):
         Category.objects.filter(pk=category_id).update(new_item=False)
 
     return JsonResponse({
-        'CategoryLinqs': CategorySelectedSerializer(instance=category).data,
+        'categoryLinqs': CategorySelectedSerializer(instance=category).data,
         'success': True
     })
 

@@ -6,6 +6,7 @@ import { CategoryList } from "./components/categoryList";
 import LinqSearch from "./components/linqSearch";
 import AddCategory from "./components/addCategory";
 import RootStore from "../store/linqs/root";
+import { LabelList } from "./components/labelList";
 import { useComponentWillMount } from "../helpers/helpers";
 
 
@@ -17,11 +18,10 @@ const store = new RootStore();
 
 function App(props) {
 
-  const handleClick = () => {
-    console.log('clicked!')
-  }
-
-  useComponentWillMount(() => store.categoryStore.loadFromObj(props.categories))
+  useComponentWillMount(() => {
+    store.categoryStore.loadFromObj(props.categories)
+    store.labelStore.loadFromObj(props.initSelected)
+  })
 
   return (
     <>
@@ -35,7 +35,7 @@ function App(props) {
           </MDBCol>
 
           <MDBCol sm={12} md={10} lg={10}>
-            <MDBBtn rounded size='sm' onClick={handleClick} color='light'>Button</MDBBtn>
+            <LabelList store={store} />
           </MDBCol>
 
         </MDBRow>

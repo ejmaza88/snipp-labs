@@ -6,11 +6,13 @@ import CategoryItem from "./categoryItem";
 
 const CategoryList = observer( (props) => {
 
-  const { categoryStore } = props.store
+  const { categoryStore, labelStore } = props.store
 
   const makeCategoryActive = (index) => categoryStore.updateActiveItem(index)
 
   const deleteCategory = (index) => categoryStore.deleteItem(index)
+
+  const loadLinqItems = (items) => labelStore.loadFromObj(items)
 
   return (
     <>
@@ -24,6 +26,7 @@ const CategoryList = observer( (props) => {
               active={index === categoryStore.activeItem}
               makeCategoryActive={makeCategoryActive}
               deleteCategory={deleteCategory}
+              loadLinqItems={loadLinqItems}
             />
           )
         })}

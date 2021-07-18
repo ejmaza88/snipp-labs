@@ -43,3 +43,8 @@ body {
 .linq-action:active {
     text-shadow: 0 0 3px #bfbfbf;
 }
+
+/* Override default styles from MDBootstrap */
+.btn {
+    box-shadow: none !important;
+}

@@ -21,8 +21,10 @@ export default function CategoryItem( props) {
     const params = {'category_id': item.id, 'is_new': item.new_item}
 
     // load the item for the selected category
+    // from API call
     getCategoryLinqs(params, (data) => loadLinqItems(data.categoryLinqs))
-    makeCategoryActive(itemIndex)
+
+    makeCategoryActive(itemIndex, item.id)
   }
 
   // delete an existing category
@@ -32,6 +34,7 @@ export default function CategoryItem( props) {
     confirmation(
       `Are you sure you want to delete '${item.name}'`,
       () => {
+        // delete category API call
         categoryDelete(params, () => deleteCategory(itemIndex))
       }
     )
@@ -52,7 +55,8 @@ export default function CategoryItem( props) {
         </div>
 
         <div className='col-2 text-end'>
-            <i className="far fa-trash-alt del-item" onClick={delCategory} />
+            {/*<small><i className="far fa-trash-alt del-item" onClick={delCategory} /></small>*/}
+            <div className='small'><i className="far fa-trash-alt del-item" onClick={delCategory} /></div>
         </div>
       </div>
     </>

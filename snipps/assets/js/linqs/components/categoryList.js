@@ -8,7 +8,10 @@ const CategoryList = observer( (props) => {
 
   const { categoryStore, labelStore } = props.store
 
-  const makeCategoryActive = (index) => categoryStore.updateActiveItem(index)
+  const makeCategoryActive = (index, itemId) => {
+    categoryStore.updateActiveItem(index)
+    categoryStore.updateActiveItemId(itemId)
+  }
 
   const deleteCategory = (index) => categoryStore.deleteItem(index)
 

@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { observer } from "mobx-react-lite";
 import { MDBBtn, MDBInput } from 'mdb-react-ui-kit';
-import { addCategory } from "../../helpers/network";
+import { addCategoryAPI } from "../../helpers/network";
 import FadeIn from 'react-fade-in';
 
 
@@ -19,20 +19,11 @@ export default function AddCategory(props) {
   return (
     <>
       <div className='mb-1'>
-      <MDBBtn rounded size='sm' color='light' className='py-0 mb-3' onClick={addToggle}>
-        {
-          visible ?
-            <i className="fas fa-times"/>
-            :
-            <i className="fas fa-plus"/>
-        }
-      </MDBBtn>
-        {
-          visible ?
-            <AddForm {...props} toggle={addToggle}/>
-            :
-            null
-        }
+        <MDBBtn rounded size='sm' color='light' className='py-0 mb-3' onClick={addToggle}>
+          { visible ? <i className="fas fa-times"/> : <i className="fas fa-plus"/> }
+        </MDBBtn>
+
+        { visible ? <AddForm {...props} toggle={addToggle}/> : null }
       </div>
     </>
   )
@@ -43,6 +34,7 @@ export default function AddCategory(props) {
 const AddForm = observer( (props) => {
 
   const { categoryStore } = props.store
+
   // hooks
   const [name, setName] = useState('')
 
@@ -66,9 +58,8 @@ const AddForm = observer( (props) => {
     const params = {name: name, new_item: true}
     const newItemIndex = itemIndex(name)
 
-    addCategory(params, (item) => {
-      categoryStore.newItem(newItemIndex, item)
-    })
+    // network call
+    addCategoryAPI(params, (item) => categoryStore.newItem(newItemIndex, item))
 
     props.toggle()
   }
@@ -82,7 +73,7 @@ const AddForm = observer( (props) => {
       <FadeIn>
         <form role='form' onSubmit={submitForm}>
           <MDBInput label='Create Category' id='add-category' type='text' size='sm' className='mb-2' onChange={changeName}/>
-          <MDBBtn size='sm' color='light' className='py-1 mb-2 float-end btn-block' type='submit' disabled={name.length === 0}>Add</MDBBtn>
+          <MDBBtn size='sm' color='info' className='py-1 mb-2 float-end btn-block' type='submit' disabled={name.length === 0}>Add</MDBBtn>
           <br/>
         </form>
       </FadeIn>

@@ -12,7 +12,7 @@ export default function LinqItem(props) {
         <div className='m-0 p-0'>
           <div className='row'>
             <div className='col-10'>
-              # {item.name} &nbsp;
+              # {item.name}
               <span className='small light-color'> - {linqName} </span>
             </div>
 

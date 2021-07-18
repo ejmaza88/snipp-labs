@@ -21,7 +21,7 @@ import { getCSRFtoken } from "./helpers";
 axios.defaults.headers.common['X-CSRFToken'] = getCSRFtoken();
 
 
-export const addCategory = (params, callback) => {
+export const addCategoryAPI = (params, callback) => {
   axios.post('/api/linqs/add_category', params)
     .then(resp => {
       const { success, obj } = resp.data
@@ -68,6 +68,24 @@ export const getCategoryLinqs = (params, callback) => {
       } else {
         // show generic error
       }
+    })
+    .catch(err => {
+      console.log(err)
+    });
+}
+
+export const addLinqAPI = (params, callback) => {
+    axios.post('/api/linqs/add', params)
+    .then(resp => {
+      const { success, newObj } = resp.data
+
+      if(success) {
+        callback(newObj)
+
+      } else {
+        // show generic error
+      }
+
     })
     .catch(err => {
       console.log(err)

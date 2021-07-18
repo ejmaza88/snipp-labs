@@ -1,13 +1,13 @@
 import json
 
 from django.contrib.auth.decorators import login_required
-# from django.db import connection
+from django.db import connection
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.views.decorators.http import require_POST, require_GET
 
-from app.models import Category
-from app.serializers import CategorySerializer, CategorySelectedSerializer
+from app.models import Category, LinqLabel, LinqUrl
+from app.serializers import CategorySerializer, CategorySelectedSerializer, LinqLabelSerializer
 
 
 @login_required
@@ -79,5 +79,31 @@ def category_linqs(request):
         'categoryLinqs': CategorySelectedSerializer(instance=category).data,
         'success': True
     })
+
+
+@login_required
+@require_POST
+def add_linq(request):
+    """
+        Add a new category
+    """
+    data = json.loads(request.body)
+    cat_id = data.get('category_id')
+    label = data.get('label')
+    url_list = data.get('url').split(',')
+
+    instance = LinqLabel.objects.create(category_id=cat_id, name=label)
+
+    url_list_objs = (
+        LinqUrl(label=instance, url=x) for x in url_list
+    )
+
+    LinqUrl.objects.bulk_create(objs=(url_obj for url_obj in url_list_objs))
+
+    context = {
+        'success': True,
+        'newObj': LinqLabelSerializer(instance).data
+    }
+    return JsonResponse(context)
 
 

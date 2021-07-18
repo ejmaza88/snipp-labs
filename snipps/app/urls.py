@@ -18,6 +18,8 @@ urlpatterns = [
     path('api/linqs/add_category', views.add_category, name='add-category'),
     path('api/linqs/get_category_linqs', views.category_linqs, name='get-category-linqs'),
     path('api/linqs/delete_category', views.archive_category, name='archive-category'),
+
+    path('api/linqs/add', views.add_linq, name='add-linq'),
 ]
 
 

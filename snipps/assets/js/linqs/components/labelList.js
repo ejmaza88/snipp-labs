@@ -12,6 +12,7 @@ const LabelList = observer( (props) => {
   return (
     <>
       <div className='mb-3'>
+        <div className='small fst-italic'>Total: {labelStore.items.labels.length}</div>
         {labelStore.items.labels.map((i, index) => {
           return <LinqItem key={index} item={i} linqName={name} />
         })}

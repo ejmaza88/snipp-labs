@@ -1,9 +1,27 @@
 import React from 'react';
 import { MDBCard } from 'mdb-react-ui-kit';
+import { confirmation } from "../../helpers/helpers";
+import { linqDelete } from "../../helpers/network";
+// import { toJS } from "mobx";
 
 
 export default function LinqItem(props) {
-  const { item, linqName } = props
+  const { item, itemIndex, deleteLinqFunc } = props
+
+  // delete an existing Linq item
+  const deleteLinq = () => {
+    const params = {'linq_id': item.id}
+
+    confirmation(
+      `Are you sure you want to delete '${item.name}'?`,
+      () => {
+        // delete Linq API call
+        linqDelete(params, () => {
+          deleteLinqFunc(itemIndex)
+        })
+      }
+    )
+  }
 
   return (
     <>
@@ -13,13 +31,13 @@ export default function LinqItem(props) {
           <div className='row'>
             <div className='col-10'>
               # {item.name}
-              <span className='small light-color'> - {linqName} </span>
+              <span className='small light-color'> - {item.category_name} </span>
             </div>
 
             <div className='col-2 text-end'>
-              <i className='fas fa-file fa-sm light-color linq-action' />
+              <small><i className='fas fa-file fa-sm light-color linq-action' /></small>
               &nbsp;
-              <i className='fas fa-trash fa-sm light-color linq-action' />
+              <small><i className='fas fa-trash fa-sm light-color linq-action' onClick={deleteLinq}/></small>
               {/*<i style={{color: '#b3b3b3'}}/>*/}
             </div>
           </div>

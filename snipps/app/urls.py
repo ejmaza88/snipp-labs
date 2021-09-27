@@ -11,15 +11,17 @@ LINQS URLS
 urlpatterns = [
     path('', views.home, name='home'),
 
-    # Linqs
+    # Linqs main page
     path('linqs/', views.linqs, name='linqs'),
 
-    # Linqs API
+    # Categories API
     path('api/linqs/add_category', views.add_category, name='add-category'),
     path('api/linqs/get_category_linqs', views.category_linqs, name='get-category-linqs'),
     path('api/linqs/delete_category', views.archive_category, name='archive-category'),
 
+    # Linqs API
     path('api/linqs/add', views.add_linq, name='add-linq'),
+    path('api/linqs/delete_linq', views.archive_linq, name='archive-linq'),
 ]
 
 

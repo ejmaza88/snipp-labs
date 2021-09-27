@@ -1,13 +1,13 @@
 import json
 
 from django.contrib.auth.decorators import login_required
-from django.db import connection
+# from django.db import connection
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.views.decorators.http import require_POST, require_GET
 
 from app.models import Category, LinqLabel, LinqUrl
-from app.serializers import CategorySerializer, CategorySelectedSerializer, LinqLabelSerializer
+from app.serializers import CategorySerializer, LinqLabelSerializer
 
 
 @login_required
@@ -17,14 +17,20 @@ def home(request):
 
 @login_required
 def linqs(request):
-    categories = Category.objects.all()
+    """
+        Renders the initial page with the default selected values
+    """
 
-    selected = categories.filter(pk=categories[0].id).prefetch_related('linqlabel_set', 'linqlabel_set__linqurl_set').get()
+    categories = Category.objects.all()
+    linq_list = LinqLabel.objects.filter(category_id=categories[0].id).select_related('category').prefetch_related('linqurl_set')
+
+    # for reference, lol
+    # selected = categories.filter(pk=categories[0].id).prefetch_related('linqlabel_set', 'linqlabel_set__linqurl_set').get()
 
     context = {
         'init_js_data': {
             'categories': CategorySerializer(categories, many=True).data,
-            'initSelected': CategorySelectedSerializer(instance=selected).data
+            'initSelectedLinqs': LinqLabelSerializer(instance=linq_list, many=True).data  # 'instance=' is optional
         }
     }
 
@@ -64,19 +70,20 @@ def archive_category(request):
 @require_GET
 def category_linqs(request):
     """
-        Return all category linqs when the name is clicked
+        Return all category linqs when the category name is clicked
     """
 
     data = request.GET
     category_id = data.get('category_id')
+    is_new = data.get('is_new')  # has the category name been clicked yet?
 
-    category = Category.objects.filter(pk=category_id).prefetch_related('linqlabel_set', 'linqlabel_set__linqurl_set').get()
+    linq_list = LinqLabel.objects.filter(category_id=category_id).select_related('category').prefetch_related('linqurl_set')
 
-    if data.get('is_new') == 'true':
+    if is_new == 'true':
         Category.objects.filter(pk=category_id).update(new_item=False)
 
     return JsonResponse({
-        'categoryLinqs': CategorySelectedSerializer(instance=category).data,
+        'categoryLinqs': LinqLabelSerializer(instance=linq_list, many=True).data,
         'success': True
     })
 
@@ -85,8 +92,9 @@ def category_linqs(request):
 @require_POST
 def add_linq(request):
     """
-        Add a new category
+        Add a new Linq, creates Label and URLs
     """
+
     data = json.loads(request.body)
     cat_id = data.get('category_id')
     label = data.get('label')
@@ -104,6 +112,19 @@ def add_linq(request):
         'success': True,
         'newObj': LinqLabelSerializer(instance).data
     }
+
     return JsonResponse(context)
 
+
+@login_required
+@require_POST
+def archive_linq(request):
+    """
+        Archive a new Linq
+    """
+
+    data = json.loads(request.body)
+    LinqLabel.objects.filter(pk=data.get('linq_id')).update(archived=True)
+
+    return JsonResponse({'success': True})
 

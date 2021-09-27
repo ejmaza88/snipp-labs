@@ -2,14 +2,14 @@ import React, { useState } from "react";
 import { observer } from "mobx-react-lite";
 import { MDBBtn, MDBCol, MDBRow, MDBInput } from 'mdb-react-ui-kit';
 import { addLinqAPI } from "../../helpers/network";
-// import { toJS } from "mobx";
+import { toJS } from "mobx";
 
 
 const AddLinq = observer( (props) => {
   const labelElId = 'add-label-input'
   const urlElId = 'add-url-input'
 
-  const { labelStore, categoryStore } = props.store
+  const { linqStore, categoryStore } = props.store
 
   // hooks
   const [label, setLabel] = useState('')
@@ -22,18 +22,15 @@ const AddLinq = observer( (props) => {
   const handleClick = (e) => {
     e.preventDefault()
 
-    // const params = {label: label, url: url, category_id: categoryStore.activeItemId}
-    //
-    // // network call
-    // addLinqAPI(params, (newObj) => {
-    //   const { items: {labels, ...others} } = labelStore  // deconstruct existing store items
-    //
-    //   const updatedLinqItems = {...others, labels: [newObj, ...labels]}
-    //
-    //   labelStore.loadFromObj(updatedLinqItems)
-    //
-    //   resetValues()
-    // })
+    const params = {label: label, url: url, category_id: categoryStore.activeItemId}
+
+    // network call
+    addLinqAPI(params, (newObj) => {
+
+      linqStore.newItem(newObj)
+
+      resetValues()
+    })
   }
 
   // reset values from state
@@ -44,11 +41,11 @@ const AddLinq = observer( (props) => {
 
     // remove active class (MDBootstrap class)
     const labelEl = document.getElementById(labelElId)
-    const urlEl = document.getElementById(labelElId).blur()
-    labelEl.classList.remove('active')
-    urlEl.classList.remove('active')
+    const urlEl = document.getElementById(labelElId)
     labelEl.blur()
     urlEl.blur()
+    labelEl.classList.remove('active')
+    urlEl.classList.remove('active')
   }
 
   // enable/disable summit button

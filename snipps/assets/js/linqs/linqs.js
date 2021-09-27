@@ -5,8 +5,8 @@ import { MDBCol, MDBRow } from 'mdb-react-ui-kit';
 import { CategoryList } from "./components/categoryList";
 import LinqSearch from "./components/linqSearch";
 import AddCategory from "./components/addCategory";
-import RootStore from "../store/linqs/root";
-import { LabelList } from "./components/labelList";
+import RootStore from "../store/linqs/rootStore";
+import { LinqList } from "./components/linqList";
 import { useComponentWillMount } from "../helpers/helpers";
 import { AddLinq } from "./components/addLinq";
 
@@ -19,12 +19,12 @@ const store = new RootStore();
 
 function App(props) {
 
-  const { categories, initSelected } = props
+  const { categories, initSelectedLinqs } = props
 
   useComponentWillMount(() => {
     store.categoryStore.loadFromObj(categories)
-    store.categoryStore.updateActiveItemId(initSelected.id)
-    store.labelStore.loadFromObj(initSelected)
+    store.categoryStore.updateActiveItemId(categories[0].id)
+    store.linqStore.loadFromArray(initSelectedLinqs)
   })
 
   return (
@@ -40,7 +40,7 @@ function App(props) {
 
           <MDBCol sm={12} md={10} lg={10}>
             <AddLinq store={store} />
-            <LabelList store={store} />
+            <LinqList store={store} />
           </MDBCol>
 
         </MDBRow>

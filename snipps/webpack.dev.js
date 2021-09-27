@@ -29,3 +29,24 @@ module.exports = merge(common, {
         new CleanWebpackPlugin(),
     ],
 });
+
+
+/*
+*
+* Uncomment bellow to run local dev bundles, don't forget to comment above code
+* */
+// module.exports = merge(common, {
+//     devtool: 'cheap-module-source-map',
+//     output: {
+//         filename: "[name]-[chunkhash].js",
+//         path: path.resolve(__dirname, 'build/dev_bundles/'),
+//     },
+//     plugins: [
+//         // let Django know where bundles are
+//         // save the file one directory above from 'output.path'
+//         new WebpackManifestPlugin({fileName:'../manifest.dev.json', publicPath:'/dev_bundles/'}),
+//
+//         // delete all files in 'build/dev_bundles/' dir automatically
+//         new CleanWebpackPlugin(),
+//     ],
+// });

@@ -2,7 +2,7 @@ import React from 'react';
 import { removeNewItemClass } from "../../helpers/helpers";
 import { getCategoryLinqs, categoryDelete } from "../../helpers/network";
 import { confirmation } from "../../helpers/helpers";
-import { toJS } from "mobx";
+// import { toJS } from "mobx";
 
 
 import 'react-confirm-alert/src/react-confirm-alert.css';
@@ -10,7 +10,7 @@ import 'react-confirm-alert/src/react-confirm-alert.css';
 
 export default function CategoryItem( props) {
 
-  const { item, active, itemIndex, makeCategoryActive, deleteCategory, loadLinqItems } = props
+  const { item, active, itemIndex, makeCategoryActiveFunc, deleteCategoryFunc, loadLinqItemsFunc } = props
   const newItemIdentifier = 'text-warning'
 
   // add a new category
@@ -22,9 +22,9 @@ export default function CategoryItem( props) {
 
     // load the item for the selected category
     // from API call
-    getCategoryLinqs(params, (data) => loadLinqItems(data.categoryLinqs))
+    getCategoryLinqs(params, (data) => loadLinqItemsFunc(data.categoryLinqs))
 
-    makeCategoryActive(itemIndex, item.id)
+    makeCategoryActiveFunc(itemIndex, item.id)
   }
 
   // delete an existing category
@@ -35,10 +35,9 @@ export default function CategoryItem( props) {
       `Are you sure you want to delete '${item.name}'`,
       () => {
         // delete category API call
-        categoryDelete(params, () => deleteCategory(itemIndex))
+        categoryDelete(params, () => deleteCategoryFunc(itemIndex))
       }
     )
-
   }
 
   return (

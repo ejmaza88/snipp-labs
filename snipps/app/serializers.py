@@ -10,12 +10,14 @@ class LinqUrlSerializer(serializers.ModelSerializer):
 
 class LinqLabelSerializer(serializers.ModelSerializer):
     urls = LinqUrlSerializer(source='linqurl_set', many=True, read_only=True)
+    category_name = serializers.CharField(source='category.name', read_only=True)
 
     class Meta:
         model = LinqLabel
-        fields = ('id', 'category', 'name', 'timestamp', 'last_modified', 'urls')
+        fields = ('id', 'category', 'name', 'timestamp', 'last_modified', 'urls', 'category_name')
 
 
+# not used anywhere ???
 class CategorySelectedSerializer(serializers.ModelSerializer):
     labels = LinqLabelSerializer(source='linqlabel_set', many=True, read_only=True)
 

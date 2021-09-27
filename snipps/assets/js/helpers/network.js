@@ -21,6 +21,11 @@ import { getCSRFtoken } from "./helpers";
 axios.defaults.headers.common['X-CSRFToken'] = getCSRFtoken();
 
 
+/*
+*
+*   CATEGORY NETWORK API
+*
+* */
 export const addCategoryAPI = (params, callback) => {
   axios.post('/api/linqs/add_category', params)
     .then(resp => {
@@ -74,6 +79,12 @@ export const getCategoryLinqs = (params, callback) => {
     });
 }
 
+
+/*
+*
+*   LABEL/LINQ NETWORK API
+*
+* */
 export const addLinqAPI = (params, callback) => {
     axios.post('/api/linqs/add', params)
     .then(resp => {
@@ -86,6 +97,23 @@ export const addLinqAPI = (params, callback) => {
         // show generic error
       }
 
+    })
+    .catch(err => {
+      console.log(err)
+    });
+}
+
+export const linqDelete = (params, callback) => {
+  axios.post('/api/linqs/delete_linq', params)
+    .then(resp => {
+      const { success } = resp.data
+
+      if (success) {
+        callback(resp)
+
+      } else {
+        // show generic error
+      }
     })
     .catch(err => {
       console.log(err)

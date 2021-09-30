@@ -3,11 +3,12 @@
   "version": "1.0.0",
   "description": "Snippets and Linqs (Bookmarks)",
   "main": "",
+  "resourceNotes": "For --env in 'scripts.watch' look at: https://stackoverflow.com/questions/42782804/how-to-pass-arguments-to-webpack-conf-js",
   "scripts": {
     "build": "npm run build:prod",
     "build:prod": "webpack --config webpack.prod.js --mode production",
     "build:dev": "webpack --config webpack.dev.js --mode development",
-    "watch": "webpack serve --config webpack.dev.js --mode development"
+    "watch": "webpack serve --config webpack.dev.js --mode development --env startDevServer"
   },
   "author": "",
   "license": "ISC",

@@ -9,6 +9,7 @@ import RootStore from "../store/linqs/rootStore";
 import { LinqList } from "./components/linqList";
 import { useComponentWillMount } from "../helpers/helpers";
 import { AddLinq } from "./components/addLinq";
+import {LinqUpdate} from "./components/linqUpdateModal";
 
 
 import '../../css/linqs.css'
@@ -31,7 +32,6 @@ function App(props) {
     <>
       <FadeIn>
         <MDBRow>
-
           <MDBCol sm={12} md={2} lg={2}>
             <LinqSearch />
             <CategoryList store={store} />
@@ -42,8 +42,8 @@ function App(props) {
             <AddLinq store={store} />
             <LinqList store={store} />
           </MDBCol>
-
         </MDBRow>
+        <LinqUpdate />
       </FadeIn>
     </>
   )

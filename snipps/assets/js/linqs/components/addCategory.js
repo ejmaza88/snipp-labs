@@ -73,7 +73,7 @@ const AddForm = observer( (props) => {
       <FadeIn>
         <form role='form' onSubmit={submitForm}>
           <MDBInput label='Create Category' id='add-category' type='text' size='sm' className='mb-2' onChange={changeName}/>
-          <MDBBtn size='sm' color='info' className='py-1 mb-2 float-end btn-block' type='submit' disabled={name.length === 0}>Add</MDBBtn>
+          <MDBBtn size='sm' color='primary' className='py-1 mb-2 float-end btn-block' type='submit' disabled={name.length === 0}>Add</MDBBtn>
           <br/>
         </form>
       </FadeIn>

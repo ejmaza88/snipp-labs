@@ -24,7 +24,7 @@ def linqs(request):
     categories = Category.objects.all()
     linq_list = LinqLabel.objects.filter(category_id=categories[0].id).select_related('category').prefetch_related('linqurl_set')
 
-    # for reference, lol
+    # for reference, =)
     # selected = categories.filter(pk=categories[0].id).prefetch_related('linqlabel_set', 'linqlabel_set__linqurl_set').get()
 
     context = {

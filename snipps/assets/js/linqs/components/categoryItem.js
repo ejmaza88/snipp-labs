@@ -43,17 +43,17 @@ export default function CategoryItem( props) {
   return (
     <>
       <div className='row'>
-        <div className='col-10'>
+        <div className='col-6'>
           <span
             id={`category_${itemIndex}`}
             className={`item ${active ? 'text-primary' : ''} ${item.new_item ? newItemIdentifier : ''}`}  // fw-bold
             onClick={activeCategory}
           >
-            { item.name }
+            <div className='small'>{ item.name }</div>
           </span>
         </div>
 
-        <div className='col-2 text-end'>
+        <div className='col-6 text-end'>
             {/*<small><i className="far fa-trash-alt del-item" onClick={delCategory} /></small>*/}
             <div className='small'><i className="far fa-trash-alt del-item" onClick={delCategory} /></div>
         </div>

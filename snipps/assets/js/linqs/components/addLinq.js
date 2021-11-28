@@ -57,17 +57,17 @@ const AddLinq = observer( (props) => {
     <>
       <form onSubmit={handleClick} role='form'>
         <MDBRow>
-          <MDBCol sm={12} md={12} lg={10}>
+          <MDBCol sm={12} md={12} lg={12}>
             <MDBInput label='URL' id={urlElId} type='text' size='sm' className='mb-2' value={url} onChange={urlChange}/>
           </MDBCol>
 
-          <MDBCol sm={12} md={10} lg={8}>
+          <MDBCol sm={12} md={10} lg={10}>
             <MDBInput label='Label' id={labelElId} type='text' size='sm' className='mb-3' value={label} onChange={labelChange}/>
           </MDBCol>
 
           <MDBCol sm={12} md={2} lg={2}>
             <div className="d-grid gap-2">
-              <MDBBtn type='submit' color='info' size='sm' className='mb-3' disabled={handleBtnDisabled()}> ADD </MDBBtn>
+              <MDBBtn type='submit' color='primary' size='sm' className='mb-3' disabled={handleBtnDisabled()}> ADD </MDBBtn>
             </div>
           </MDBCol>
         </MDBRow>

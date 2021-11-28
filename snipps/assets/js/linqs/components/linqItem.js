@@ -2,11 +2,19 @@ import React from 'react';
 import { MDBCard } from 'mdb-react-ui-kit';
 import { confirmation } from "../../helpers/helpers";
 import { linqDelete } from "../../helpers/network";
+import { Modal } from 'bootstrap';
 // import { toJS } from "mobx";
 
 
 export default function LinqItem(props) {
   const { item, itemIndex, deleteLinqFunc } = props
+
+  // update modal
+  const modal = () => {
+    const el = document.querySelector('#linqUpdateModal')
+    const modal = new Modal(el)
+    modal.toggle()
+  }
 
   // delete an existing Linq item
   const deleteLinq = () => {
@@ -35,7 +43,7 @@ export default function LinqItem(props) {
             </div>
 
             <div className='col-2 text-end'>
-              <small><i className='fas fa-file fa-sm light-color linq-action' /></small>
+              <small><i className='fas fa-file fa-sm light-color linq-action' onClick={modal}/></small>
               &nbsp;
               <small><i className='fas fa-trash fa-sm light-color linq-action' onClick={deleteLinq}/></small>
               {/*<i style={{color: '#b3b3b3'}}/>*/}

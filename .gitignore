@@ -11,3 +11,4 @@ manifest.dev.json
 dev_bundles/
 npm-debug.log
 snipps/db.sqlite3
+snipps/.env

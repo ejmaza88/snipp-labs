@@ -53,8 +53,8 @@ const AddLinq = observer( (props) => {
     return (label === '' || url === '')
   }
 
-  return (
-    <>
+  const linqSubmitForm = () => {
+    return (
       <form onSubmit={handleClick} role='form'>
         <MDBRow>
           <MDBCol sm={12} md={12} lg={12}>
@@ -72,6 +72,12 @@ const AddLinq = observer( (props) => {
           </MDBCol>
         </MDBRow>
       </form>
+    )
+  }
+
+  return (
+    <>
+      {categoryStore.items.length > 0 ? linqSubmitForm() : null}
     </>
   )
 })

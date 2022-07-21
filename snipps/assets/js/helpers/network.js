@@ -19,6 +19,7 @@ import { getCSRFtoken } from "./helpers";
 
 * */
 axios.defaults.headers.common['X-CSRFToken'] = getCSRFtoken();
+axios.defaults.headers.common['contentType'] = 'application/json';
 
 
 /*

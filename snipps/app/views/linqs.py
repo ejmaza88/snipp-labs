@@ -5,6 +5,8 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.views.decorators.http import require_POST, require_GET
+from rest_framework import status
+from rest_framework.decorators import api_view
 
 from app.models import Category, LinqLabel, LinqUrl
 from app.serializers import CategorySerializer, LinqLabelSerializer
@@ -21,35 +23,49 @@ def linqs(request):
         Renders the initial page with the default selected values
     """
 
-    categories = Category.objects.all()
-    linq_list = LinqLabel.objects.filter(category_id=categories[0].id).select_related('category').prefetch_related('linqurl_set')
-
-    # for reference, =)
-    # selected = categories.filter(pk=categories[0].id).prefetch_related('linqlabel_set', 'linqlabel_set__linqurl_set').get()
+    categories = Category.objects.filter(user=request.user)
 
     context = {
         'init_js_data': {
-            'categories': CategorySerializer(categories, many=True).data,
-            'initSelectedLinqs': LinqLabelSerializer(instance=linq_list, many=True).data  # 'instance=' is optional
+            'categories': CategorySerializer(categories, many=True).data
         }
     }
+
+    if categories:
+        linq_list = LinqLabel.objects.filter(category_id=categories[0].id).select_related('category').prefetch_related('linqurl_set')
+        context['init_js_data'].update({
+            'initSelectedLinqs': LinqLabelSerializer(instance=linq_list, many=True).data  # 'instance=' is optional
+        })
+
+    # for reference, =)
+    # selected = categories.filter(pk=categories[0].id).prefetch_related('linqlabel_set', 'linqlabel_set__linqurl_set').get()
 
     return render(request, 'app/linqs.html', context)
 
 
 # API VIEWS
 @login_required
-@require_POST
+@api_view(['POST'])
 def add_category(request):
     """
         Add a new category
     """
-    data = json.loads(request.body)
-    instance = Category.objects.create(name=data.get('name'), new_item=data.get('new_item'))
-    context = {
-        'success': True,
-        'obj': CategorySerializer(instance).data
-    }
+
+    category_count = Category.objects.count()
+    data = {'user': request.user.id, **request.data}
+
+    # only when creating a category for the firs time
+    if category_count == 0:
+        data.update({'new_item': False})
+
+    category_serializer = CategorySerializer(data=data)
+
+    if category_serializer.is_valid():
+        category_serializer.save()
+        context = {'success': True, 'obj': category_serializer.data, 'status': status.HTTP_201_CREATED}
+        return JsonResponse(context)
+
+    context = {'success': True, 'obj': category_serializer.errors, 'status': status.HTTP_400_BAD_REQUEST}
     return JsonResponse(context)
 
 

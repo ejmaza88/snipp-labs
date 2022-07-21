@@ -1,3 +1,8 @@
+import secrets
+import string
+
+from django.conf import settings
+from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 
@@ -12,6 +17,24 @@ class ArchiveModelHiddenManager(models.Manager):
         return super(ArchiveModelHiddenManager, self).get_queryset().filter(archived=True)
 
 
+# Custom User Model
+def _key_generator():
+    """Return a unique key"""
+    return ''.join(secrets.choice(f'{string.ascii_letters}{string.digits}') for _ in range(20))
+
+
+class User(AbstractUser):
+    key = models.CharField(max_length=20, db_index=True, default=_key_generator)
+
+    def __str__(self):
+        """Return a human-readable string representing a User record"""
+        return self.get_full_name()
+
+    class Meta:
+        ordering = ['first_name']
+
+
+# Main Models
 class ArchiveModel(models.Model):
     """
     For models that will never be deleted, use an archive flag to hide them from normal operations.
@@ -33,8 +56,9 @@ class Category(ArchiveModel):
     Category Record
     """
 
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     name = models.CharField(max_length=50)
-    new_item = models.BooleanField(default=False)
+    new_item = models.BooleanField(default=True)
 
     timestamp = models.DateTimeField(auto_now_add=True)
     last_modified = models.DateTimeField(auto_now=True)

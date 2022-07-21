@@ -1,8 +1,17 @@
 from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin
 
-from .models import Category, LinqLabel, LinqUrl
+from .models import User, Category, LinqLabel, LinqUrl
 
 # Register your models here.
+
+
+@admin.register(User)
+class CustomUserAdmin(UserAdmin):
+    list_display = ['username', 'key', 'first_name', 'last_name']
+    fieldsets = (
+        ('Unique Key', {'fields': ['key']}),
+    ) + UserAdmin.fieldsets
 
 
 class ArchivedModelAdmin(admin.ModelAdmin):

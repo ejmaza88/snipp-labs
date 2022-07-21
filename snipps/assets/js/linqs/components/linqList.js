@@ -13,7 +13,7 @@ const LinqList = observer( (props) => {
   return (
     <>
       <div className='mb-3'>
-        <div className='small fst-italic'>Total: {linqStore.items.length}</div>
+        <div className='small fst-italic'>{linqStore.items.length > 0 ? `Total:  ${linqStore.items.length}` : null}</div>
         {linqStore.items.map((i, index) => {
           return (
             <LinqItem

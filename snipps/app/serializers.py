@@ -29,5 +29,5 @@ class CategorySelectedSerializer(serializers.ModelSerializer):
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
-        fields = ('id', 'name', 'new_item', 'timestamp', 'last_modified')
-
+        fields = '__all__'
+        # fields = ('id', 'name', 'new_item', 'timestamp', 'last_modified')

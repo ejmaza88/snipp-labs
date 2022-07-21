@@ -55,11 +55,19 @@ const AddForm = observer( (props) => {
   const submitForm = (e) => {
     e.preventDefault();
 
-    const params = {name: name, new_item: true}
+    const params = {name: name}
     const newItemIndex = itemIndex(name)
 
-    // network call
-    addCategoryAPI(params, (item) => categoryStore.newItem(newItemIndex, item))
+    // network call to add category
+    addCategoryAPI(params, (item) => {
+      categoryStore.newItem(newItemIndex, item)
+
+      // if new category is added for the first time, mark active
+      if (categoryStore.items.length === 1) {
+        categoryStore.updateActiveItem(newItemIndex)
+        categoryStore.updateActiveItemId(item.id)
+      }
+    })
 
     props.toggle()
   }

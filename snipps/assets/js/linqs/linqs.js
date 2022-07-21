@@ -23,9 +23,14 @@ function App(props) {
   const { categories, initSelectedLinqs } = props
 
   useComponentWillMount(() => {
+    // load categories to store
     store.categoryStore.loadFromObj(categories)
-    store.categoryStore.updateActiveItemId(categories[0].id)
-    store.linqStore.loadFromArray(initSelectedLinqs)
+
+    // update the 'active' category item if categories array is Not empty
+    if (categories.length > 0) store.categoryStore.updateActiveItemId(categories[0].id)
+
+    // load the linq store
+    store.linqStore.loadFromArray(initSelectedLinqs ? initSelectedLinqs : [])
   })
 
   return (

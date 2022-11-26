@@ -46,6 +46,8 @@ function App(props) {
           <MDBCol sm={12} md={10} lg={10}>
             <AddLinq store={store} />
             <LinqList store={store} />
+            <div className="p-4"/>
+            <div className="p-4"/>
           </MDBCol>
         </MDBRow>
         <LinqUpdate />

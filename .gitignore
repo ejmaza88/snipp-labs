@@ -6,6 +6,8 @@ __pycache__
 snipps/snipps/local_settings.py
 .DS_Store
 
+/snipps/app/data/
+/snipps/app/fixtures/
 
 node_modules/
 manifest.dev.json

@@ -1,6 +1,7 @@
 const path = require('path');
 // const webpack = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const NodePolyfillPlugin = require('node-polyfill-webpack-plugin');
 
 // const devMode = process.env.NODE_ENV !== 'production';
 
@@ -62,6 +63,7 @@ module.exports = {
         // new webpack.ProvidePlugin({
         //     Popper: ['popper.js', 'default']  // Used with Bootstrap5
         // }),
+        new NodePolyfillPlugin(),
     ],
     optimization: {
         splitChunks: {  // 3rd party code into its own bundle for long term caching

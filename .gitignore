@@ -4,6 +4,7 @@ __pycache__
 
 
 snipps/snipps/local_settings.py
+.DS_Store
 
 
 node_modules/

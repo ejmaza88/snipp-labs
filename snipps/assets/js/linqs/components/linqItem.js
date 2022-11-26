@@ -43,9 +43,9 @@ export default function LinqItem(props) {
             </div>
 
             <div className='col-2 text-end'>
-              <small><i className='fas fa-file fa-sm light-color linq-action' onClick={modal}/></small>
+              <small><i className='fas fa-file fa-sm light-color linq-action linq-action-update' onClick={modal}/></small>
               &nbsp;
-              <small><i className='fas fa-trash fa-sm light-color linq-action' onClick={deleteLinq}/></small>
+              <small><i className='fas fa-trash fa-sm light-color linq-action linq-action-del' onClick={deleteLinq}/></small>
               {/*<i style={{color: '#b3b3b3'}}/>*/}
             </div>
           </div>

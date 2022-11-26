@@ -43,7 +43,12 @@ body {
 .linq-action:active {
     text-shadow: 0 0 3px #bfbfbf;
 }
-
+.linq-action-update:hover {
+    color: #1266f1;
+}
+.linq-action-del:hover {
+    color: #ff0000;
+}
 /* Override default styles from MDBootstrap */
 .btn {
     box-shadow: none !important;

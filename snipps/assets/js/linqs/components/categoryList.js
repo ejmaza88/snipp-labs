@@ -1,6 +1,7 @@
 import React from 'react';
 import { observer } from "mobx-react-lite";
 import CategoryItem from "./categoryItem";
+import {getCategoryLinqs} from "../../helpers/network";
 // import { toJS } from "mobx";
 
 
@@ -13,8 +14,28 @@ const CategoryList = observer( (props) => {
     categoryStore.updateActiveItemId(itemId)
   }
 
+  const loadDefaultAfterDelete = () => {
+    const defaultCategory = categoryStore.items[0]
+
+    // if deleting the category that is selected, get the items from that is a index 0
+    if (categoryStore.activeItemId !== defaultCategory.id) {
+      const params = {
+        'category_id': defaultCategory.id,
+        'is_new': defaultCategory.new_item,
+      }
+      getCategoryLinqs(params, (data) => {
+        linqStore.loadFromArray(data.categoryLinqs)
+        categoryStore.updateActiveItem(0)  // TODO: item index, rename this in store
+        categoryStore.updateActiveItemId(defaultCategory.id)
+      })
+    }
+  }
+
   // const deleteCategory = (index) => categoryStore.deleteItem(index)
-  const deleteCategoryFunc = (index) => categoryStore.deleteItem(index)
+  const deleteCategoryFunc = (index) => {
+    categoryStore.deleteItem(index)
+    loadDefaultAfterDelete()
+  }
   const loadLinqItemsFunc = (items) => linqStore.loadFromArray(items)
 
 

@@ -144,3 +144,18 @@ def archive_linq(request):
 
     return JsonResponse({'success': True})
 
+
+@login_required
+@require_GET
+def search_linq(request):
+    """
+        Search Linqs given a search term
+    """
+
+    term = request.GET.get("search_term")
+    linq_list = LinqLabel.objects.filter(name__icontains=term).select_related('category').prefetch_related('linqurl_set')
+
+    return JsonResponse({
+        "success": True,
+        "searchedLinqs": LinqLabelSerializer(instance=linq_list, many=True).data,
+    })

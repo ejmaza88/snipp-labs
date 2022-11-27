@@ -22,6 +22,7 @@ urlpatterns = [
     # Linqs API
     path('api/linqs/add', views.add_linq, name='add-linq'),
     path('api/linqs/delete_linq', views.archive_linq, name='archive-linq'),
+    path('api/linqs/search', views.search_linq, name='search-linq'),
 ]
 
 

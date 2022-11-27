@@ -38,7 +38,7 @@ function App(props) {
       <FadeIn>
         <MDBRow>
           <MDBCol sm={12} md={2} lg={2}>
-            <LinqSearch />
+            <LinqSearch store={store} />
             <CategoryList store={store} />
             <AddCategory store={store} />
           </MDBCol>

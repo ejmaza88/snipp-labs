@@ -120,3 +120,20 @@ export const linqDelete = (params, callback) => {
       console.log(err)
     });
 }
+
+export const linqSearch = (params, callback) => {
+  axios.get('/api/linqs/search', {params: params})
+    .then(resp => {
+      const { success } = resp.data
+
+      if (success) {
+        callback(resp.data)
+
+      } else {
+        // show generic error
+      }
+    })
+    .catch(err => {
+      console.log(err)
+    });
+}

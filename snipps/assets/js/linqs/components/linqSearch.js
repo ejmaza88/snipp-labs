@@ -24,16 +24,17 @@ export default function LinqSearch(props) {
   }
 
   useEffect(() => {
-    let delaySearch = () => null
+    let delaySearch = () => null  // this is done to prevent a query call on initial render
 
     if (rendered.current) {
       delaySearch = setTimeout(() => {
+        // When the input field is empty display the linqs from the current selected category
         if (searchTerm === "") {
           displaySelectedCategoryLinqs()
         } else {
           displaySearchedLinqs()
         }
-      }, 750)
+      }, 750)  // wait before sending the query
 
     } else {
       rendered.current = true

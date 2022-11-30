@@ -20,7 +20,7 @@ def home(request):
 @login_required
 def linqs(request):
     """
-        Renders the initial page with the default selected values
+    Renders the initial page with the default selected values
     """
 
     categories = Category.objects.filter(user=request.user)
@@ -48,7 +48,7 @@ def linqs(request):
 @api_view(['POST'])
 def add_category(request):
     """
-        Add a new category
+    Add a new category
     """
 
     category_count = Category.objects.count()
@@ -73,7 +73,7 @@ def add_category(request):
 @require_POST
 def archive_category(request):
     """
-        Archives a category
+    Archives a category
     """
 
     data = json.loads(request.body)
@@ -86,7 +86,7 @@ def archive_category(request):
 @require_GET
 def category_linqs(request):
     """
-        Return all category linqs when the category name is clicked
+    Return all category linQs when the category name is clicked
     """
 
     data = request.GET
@@ -108,7 +108,7 @@ def category_linqs(request):
 @require_POST
 def add_linq(request):
     """
-        Add a new Linq, creates Label and URLs
+    Add a new LinQ, creates Label and URLs
     """
 
     data = json.loads(request.body)
@@ -126,7 +126,7 @@ def add_linq(request):
 
     context = {
         'success': True,
-        'newObj': LinqLabelSerializer(instance).data
+        'newLinq': LinqLabelSerializer(instance).data
     }
 
     return JsonResponse(context)
@@ -136,7 +136,7 @@ def add_linq(request):
 @require_POST
 def archive_linq(request):
     """
-        Archive a new Linq
+    Archive a new LinQ
     """
 
     data = json.loads(request.body)
@@ -149,7 +149,7 @@ def archive_linq(request):
 @require_GET
 def search_linq(request):
     """
-        Search Linqs given a search term
+    Search LinQs given a search term
     """
 
     term = request.GET.get("search_term")
@@ -159,3 +159,17 @@ def search_linq(request):
         "success": True,
         "searchedLinqs": LinqLabelSerializer(instance=linq_list, many=True).data,
     })
+
+
+@login_required
+@require_POST
+def update_linq(request):
+    """
+    Update LinQ label or urls (add/remove)
+    """
+
+    data = json.loads(request.body)
+    # LinqLabel.objects.filter(pk=data.get('linq_id')).update(archived=True)
+    print(data)
+
+    return JsonResponse({'success': True, "hello": "world"})

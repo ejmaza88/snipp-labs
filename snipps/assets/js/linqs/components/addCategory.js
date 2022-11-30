@@ -44,7 +44,7 @@ const AddForm = observer( (props) => {
     setName(e.target.value)
   }
 
-  // get item index so it can be inserted in the array
+  // get item index and insert in the array
   const itemIndex = (itemName) => {
     const items = categoryStore.items.map(i => i.name)
     items.push(itemName)
@@ -60,13 +60,13 @@ const AddForm = observer( (props) => {
     const newItemIndex = itemIndex(name)
 
     // network call to add category
-    addCategoryAPI(params, (item) => {
-      categoryStore.newItem(newItemIndex, item)
+    addCategoryAPI(params, (data) => {
+      categoryStore.newItem(newItemIndex, data.obj)
 
       // if new category is added for the first time, mark active
       if (categoryStore.items.length === 1) {
         categoryStore.updateActiveItem(newItemIndex)
-        categoryStore.updateActiveItemId(item.id)
+        categoryStore.updateActiveItemId(data.obj.id)
       }
     })
 

@@ -50,7 +50,7 @@ function App(props) {
             <div className="p-4"/>
           </MDBCol>
         </MDBRow>
-        <LinqUpdate />
+        <LinqUpdate store={store} />
       </FadeIn>
     </>
   )

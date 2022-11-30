@@ -1,14 +1,12 @@
 from django.urls import path
 
-from . import views
-
-app_name = 'app'
+from app import views
 
 
 """
 LINQS URLS
 """
-urlpatterns = [
+linq_urlpatterns = [
     path('', views.home, name='home'),
 
     # Linqs main page
@@ -23,15 +21,5 @@ urlpatterns = [
     path('api/linqs/add', views.add_linq, name='add-linq'),
     path('api/linqs/delete_linq', views.archive_linq, name='archive-linq'),
     path('api/linqs/search', views.search_linq, name='search-linq'),
-]
-
-
-"""
-SNIPPETS URLS
-"""
-urlpatterns = urlpatterns + [
-    # Snippets
-    path('snippets/', views.snippets, name='snippets'),
-
-    # Snippets API
+    path('api/linqs/update', views.update_linq, name='update-linq'),
 ]

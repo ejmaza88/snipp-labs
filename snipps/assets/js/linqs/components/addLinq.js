@@ -25,9 +25,9 @@ const AddLinq = observer( (props) => {
     const params = {label: label, url: url, category_id: categoryStore.activeItemId}
 
     // network call
-    addLinqAPI(params, (newObj) => {
+    addLinqAPI(params, (data) => {
 
-      linqStore.newItem(newObj)
+      linqStore.newItem(data.newLinq)
 
       resetValues()
     })

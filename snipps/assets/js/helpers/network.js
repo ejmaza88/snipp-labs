@@ -23,35 +23,14 @@ axios.defaults.headers.common['contentType'] = 'application/json';
 
 
 /*
-*
-*   CATEGORY NETWORK API
-*
+  Common network call body
 * */
-export const addCategoryAPI = (params, callback) => {
-  axios.post('/api/linqs/add_category', params)
+const getNetworkCall = (url, params, callback) => {
+  axios.get(url, {params: params})
     .then(resp => {
-      const { success, obj } = resp.data
 
-      if(success) {
-        callback(obj)
-
-      } else {
-        // show generic error
-      }
-
-    })
-    .catch(err => {
-      console.log(err)
-    });
-}
-
-export const categoryDelete = (params, callback) => {
-  axios.post('/api/linqs/delete_category', params)
-    .then(resp => {
-      const { success } = resp.data
-
-      if (success) {
-        callback()
+      if (resp.data) {
+        callback(resp.data)
 
       } else {
         // show generic error
@@ -62,13 +41,11 @@ export const categoryDelete = (params, callback) => {
     });
 }
 
-
-export const getCategoryLinqs = (params, callback) => {
-  axios.get('/api/linqs/get_category_linqs', {params: params})
+const postNetworkCall = (url, data, callback) => {
+  axios.post(url, data)
     .then(resp => {
-      const { success } = resp.data
 
-      if (success) {
+      if (resp.data.success) {
         callback(resp.data)
 
       } else {
@@ -83,57 +60,60 @@ export const getCategoryLinqs = (params, callback) => {
 
 /*
 *
+*   CATEGORY NETWORK API
+*
+* */
+export const addCategoryAPI = (data, callback) => {
+  postNetworkCall(
+    '/api/linqs/add_category',
+    data,
+    callback
+  )
+}
+
+export const categoryDelete = (data, callback) => {
+  postNetworkCall(
+    '/api/linqs/delete_category',
+    data,
+    callback
+  )
+}
+
+
+export const getCategoryLinqs = (params, callback) => {
+  getNetworkCall(
+    '/api/linqs/get_category_linqs',
+    params,
+    callback
+  )
+}
+
+
+/*
+*
 *   LABEL/LINQ NETWORK API
 *
 * */
-export const addLinqAPI = (params, callback) => {
-    axios.post('/api/linqs/add', params)
-    .then(resp => {
-      const { success, newObj } = resp.data
-
-      if(success) {
-        callback(newObj)
-
-      } else {
-        // show generic error
-      }
-
-    })
-    .catch(err => {
-      console.log(err)
-    });
+export const addLinqAPI = (data, callback) => {
+  postNetworkCall(
+    '/api/linqs/add',
+    data,
+    callback
+  )
 }
 
-export const linqDelete = (params, callback) => {
-  axios.post('/api/linqs/delete_linq', params)
-    .then(resp => {
-      const { success } = resp.data
-
-      if (success) {
-        callback(resp)
-
-      } else {
-        // show generic error
-      }
-    })
-    .catch(err => {
-      console.log(err)
-    });
+export const linqDelete = (data, callback) => {
+  postNetworkCall(
+    '/api/linqs/delete_linq',
+    data,
+    callback
+  )
 }
 
 export const linqSearch = (params, callback) => {
-  axios.get('/api/linqs/search', {params: params})
-    .then(resp => {
-      const { success } = resp.data
-
-      if (success) {
-        callback(resp.data)
-
-      } else {
-        // show generic error
-      }
-    })
-    .catch(err => {
-      console.log(err)
-    });
+  getNetworkCall(
+    '/api/linqs/search',
+    params,
+    callback
+  )
 }

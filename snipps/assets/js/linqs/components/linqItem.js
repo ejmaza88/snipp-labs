@@ -8,20 +8,21 @@ import ConfirmationModal from '@leafygreen-ui/confirmation-modal';
 
 
 export default function LinqItem(props) {
-  const { item, itemIndex, deleteLinqFunc } = props
+  const { item, itemIndex, deleteLinqFunc, updateLinqStore } = props
   const [open, setOpen] = useState(false);
 
   // update modal
-  const modal = () => {
-    const el = document.querySelector('#linqUpdateModal')
-    const modal = new Modal(el)
-    modal.toggle()
+  const updateLinqModal = () => {
+    updateLinqStore.loadLinq(itemIndex, item)
+
+    const modalElementById = document.querySelector('#linqUpdateModal')
+    const updateModal = new Modal(modalElementById)
+    updateModal.toggle()
   }
 
   // delete an existing Linq item
   const deleteLinq = () => {
     const params = {'linq_id': item.id}
-
     linqDelete(params, () => {
       deleteLinqFunc(itemIndex)
       setOpen(false)
@@ -40,7 +41,7 @@ export default function LinqItem(props) {
             </div>
 
             <div className='col-2 text-end'>
-              <small><i className='fas fa-file fa-sm light-color linq-action linq-action-update' onClick={modal}/></small>
+              <small><i className='fas fa-file fa-sm light-color linq-action linq-action-update' onClick={updateLinqModal}/></small>
               &nbsp;
               <small><i className='fas fa-trash fa-sm light-color linq-action linq-action-del' onClick={() => setOpen(!open)}/></small>
               {/*<i style={{color: '#b3b3b3'}}/>*/}
@@ -56,6 +57,7 @@ export default function LinqItem(props) {
           )
         })}
 
+        {/*confirmation modal to delete LinQ*/}
         <ConfirmationModal
           title={""}
           open={open}

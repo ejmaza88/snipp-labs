@@ -110,6 +110,15 @@ export const linqDelete = (data, callback) => {
   )
 }
 
+export const linqUpdate = (data, callback) => {
+  postNetworkCall(
+    '/api/linqs/update',
+    data,
+    callback
+  )
+}
+
+
 export const linqSearch = (params, callback) => {
   getNetworkCall(
     '/api/linqs/search',

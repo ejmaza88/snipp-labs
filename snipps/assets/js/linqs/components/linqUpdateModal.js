@@ -3,12 +3,12 @@ import {MDBBtn, MDBCol, MDBInput, MDBRow} from "mdb-react-ui-kit";
 import {Modal} from "bootstrap";
 import {toJS} from "mobx";
 import {observer} from "mobx-react-lite";
-
+import {linqUpdate} from "../../helpers/network";
 
 
 const LinqUpdate = observer( (props) => {
 
-  const {updateLinqStore} = props.store
+  const {updateLinqStore, linqStore} = props.store
 
   // hooks
   const [linqLabel, setLinqLabel] = useState("")
@@ -47,14 +47,17 @@ const LinqUpdate = observer( (props) => {
       handleUrlList()
     }
 
-    const data = {
-      linqId: updateLinqStore.linq.id,
-      linqName: linqLabel,
+    const request_data = {
+      linq_id: updateLinqStore.linq.id,
+      linq_name: linqLabel,
       urls: urlsToSubmit,
     }
 
-    console.log(data)
-    toggleUpdateModal()
+    linqUpdate(request_data, (data) => {
+      console.log(data)
+      linqStore.updateItems(updateLinqStore.linqIndex, data.linq)
+      toggleUpdateModal()
+    })
   }
 
   const toggleUpdateModal = () => Modal.getInstance(document.querySelector('#linqUpdateModal')).toggle();

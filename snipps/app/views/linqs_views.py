@@ -169,7 +169,21 @@ def update_linq(request):
     """
 
     data = json.loads(request.body)
-    # LinqLabel.objects.filter(pk=data.get('linq_id')).update(archived=True)
-    print(data)
 
-    return JsonResponse({'success': True, "hello": "world"})
+    linq = LinqLabel.objects.get(pk=data["linq_id"])
+    linq.name = data["linq_name"]
+    linq.save()
+
+    # create all the new urls
+    LinqUrl.objects.bulk_create(
+        [LinqUrl(label_id=data["linq_id"], url=url["url"]) for url in data["urls"] if not url.get("id")]
+    )
+
+    LinqUrl.objects.filter(id__in=[]).update(archived=True)
+
+    linq.refresh_from_db()
+
+    return JsonResponse({
+        'success': True,
+        "linq": LinqLabelSerializer(linq).data
+    })

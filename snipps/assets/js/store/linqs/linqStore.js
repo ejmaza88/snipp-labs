@@ -13,6 +13,7 @@ export default class LinqStore {
       loadFromArray: action,
       newItem: action,
       deleteItem: action,
+      updateItems: action,
 
       // double: computed,
       // increment: action,

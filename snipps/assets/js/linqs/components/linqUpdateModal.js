@@ -34,6 +34,9 @@ const LinqUpdate = observer( (props) => {
     setLinqUrlList([{url: newURL}, ...linqUrlList])
     setNewURL("")
   }
+  const handleRemoveUrl = (e) => {
+    console.log(e.target.dataset)
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -54,7 +57,6 @@ const LinqUpdate = observer( (props) => {
     }
 
     linqUpdate(request_data, (data) => {
-      console.log(data)
       linqStore.updateItems(updateLinqStore.linqIndex, data.linq)
       toggleUpdateModal()
     })
@@ -64,7 +66,7 @@ const LinqUpdate = observer( (props) => {
 
   const currentLinqs = () => {
     return linqUrlList.map((item, index) => {
-      return <StoredURL key={index} url={item.url}/>
+      return <StoredURL key={index} urlId={item.id} url={item.url} handleOnClick={handleRemoveUrl}/>
     })
   }
 
@@ -118,14 +120,14 @@ const ModalCore = (props) => {
 }
 
 
-const StoredURL = ({url}) => {
+const StoredURL = ({urlId, url, handleOnClick}) => {
   // Component to display a URL in modal when updating LinQ
   return (
     <>
       <div className='row'>
         <div className='col-1'>
-          <MDBBtn rounded size='sm' color='light' className='py-0 m-0'>
-            <i className="fas fa-minus-circle" color="danger" />
+          <MDBBtn rounded size='sm' color='light' className='py-0 m-0' data-url-id={urlId} onClick={handleOnClick}>
+            <i className="fas fa-minus-circle" color="danger"/>
           </MDBBtn>
         </div>
         <div className='col-11'>

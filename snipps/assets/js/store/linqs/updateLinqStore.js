@@ -15,8 +15,8 @@ export default class UpdateLinqStore {
       // actions
       loadLinq: action,
       loadUrlList: action,
-      removeUrl: action,
-      addUrl: action,
+      // removeUrl: action,
+      // addUrl: action,
     })
   }
 
@@ -30,12 +30,14 @@ export default class UpdateLinqStore {
     this.urlList = linkList
   }
 
-  removeUrl = (linkIndex) => {
-    this.urlList.splice(linkIndex, 1)
-  }
-
-  addUrl = (url) => {
-    this.urlList.push(url)
-  }
+  // Commenting bellow, using useState instead of store,
+  // not sure if the best idea, not so relevant at the moment.
+  // removeUrl = (linkIndex) => {
+  //   this.urlList.splice(linkIndex, 1)
+  // }
+  //
+  // addUrl = (url) => {
+  //   this.urlList.push(url)
+  // }
 
 }

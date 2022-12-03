@@ -28,7 +28,8 @@ export default class LinqStore {
   deleteItem = (itemIndex) => this.items.splice(itemIndex, 1)
 
   updateItems = (itemIndex, linq) => {
-    // At "stuffIndex" position add "updatedStuff" and remove 1 item
+    // At "itemIndex" position remove 1 item and add "linq"
+    // I think this code replaces the item???
     this.items.splice(itemIndex, 1, linq)
   }
 

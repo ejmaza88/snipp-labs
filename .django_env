@@ -1,0 +1,7 @@
+#!/bin/bash
+
+export PYTHONPATH="$PWD:$PYTHONPATH"
+export DJANGO_SETTINGS_MODULE="snipps.settings"
+export DJANGO_SU_NAME="admin"
+export DJANGO_SU_EMAIL="admin@mail.com"
+export DJANGO_SU_PASSWORD="secret"

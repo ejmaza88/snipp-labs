@@ -1,0 +1,79 @@
+version: "3.9"
+
+x-service: &default-service
+  build:
+    context: .
+  image: maza88/snipps:latest
+  environment:
+    DB_HOST: db
+    DB_NAME: snipps
+    DB_USER: root
+    DB_PASSWORD: snippspass1234
+    DJANGO_SETTINGS_MODULE: snipps.settings
+    PYTHONBREAKPOINT: $(PYTHONBREAKPOINT)
+    PYTHONSTARTUP: /webapps/shell_startup.py
+  restart: "no"
+  working_dir: /webapps
+  volumes:
+    - .:/webapps
+  depends_on:
+    - db
+  networks:
+    - db_net
+
+services:
+  django-server:
+    <<: *default-service
+    build:
+      context: ./
+      target: service-django
+    entrypoint: django-admin runserver 0.0.0.0:8000
+    stdin_open: true
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_started
+      migrate:
+        condition: service_completed_successfully
+
+  django-shell:
+    <<: *default-service
+    command: django-admin shell
+
+  shell:
+    <<: *default-service
+    command: /bin/bash
+
+  migrate:
+    <<: *default-service
+    command: python manage.py migrate
+
+  pycharm:
+    <<: *default-service
+    entrypoint: [ ]
+    command: [ ]
+    networks:
+      - db_net
+    depends_on:
+      db:
+        condition: service_started
+
+  db:
+    image: postgres:14.2-alpine3.15
+    environment:
+      POSTGRES_DB: snipps
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: snippspass1234
+    volumes:
+      - db_data:/var/lib/postgresql
+    ports:
+      - "5432:5432"
+    networks:
+      - db_net
+
+networks:
+  db_net:
+
+volumes:
+  db_data:

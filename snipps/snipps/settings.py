@@ -157,3 +157,9 @@ try:
     from .local_settings import *
 except ImportError:
     pass
+
+# Load any settings customized to the docker setup.
+try:
+    from .docker_settings import *
+except ImportError:
+    pass

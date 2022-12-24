@@ -1,4 +1,5 @@
-FROM python:3.9.12-slim-buster AS service-base
+FROM python:3.9.12-slim-buster
+
 RUN apt update \
     && apt upgrade -y \
     && apt install -y \
@@ -14,21 +15,18 @@ RUN apt update \
     && apt autoclean -y
 
 
-FROM service-base AS service-builder
 RUN mkdir -p /app
+
 WORKDIR /app
+
 RUN pip install -U pip
+
 COPY requirements.txt requirements.txt
+
 RUN pip install -r requirements.txt
+
 COPY ./ /app/
 
+ENV PYTHONPATH /app/snipps
 
-FROM python:3.9.12-slim-buster AS service-python
-COPY --from=service-builder /usr/local/lib/python3.9/site-packages/ /usr/local/lib/python3.9/site-packages/
-COPY --from=service-builder /usr/local/bin/ /usr/local/bin/
-
-
-FROM service-python AS service-django
-WORKDIR /app
-ENV PYTHONPATH /app
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+CMD ["/bin/bash"]

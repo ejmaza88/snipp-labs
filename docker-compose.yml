@@ -5,7 +5,7 @@ x-service: &default-service
     context: .
   image: maza88/snipps:latest
   env_file:
-    - .django_env
+    - .django.env
   restart: "no"
   working_dir: /app
   volumes:
@@ -18,9 +18,6 @@ x-service: &default-service
 services:
   django-server:
     <<: *default-service
-    build:
-      context: ./
-      target: service-django
     entrypoint: django-admin runserver 0.0.0.0:8000
     stdin_open: true
     ports:

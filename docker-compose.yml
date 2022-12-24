@@ -18,7 +18,7 @@ x-service: &default-service
 services:
   django-server:
     <<: *default-service
-    entrypoint: django-admin runserver 0.0.0.0:8000
+    entrypoint: /app/scripts/db-check.sh
     stdin_open: true
     ports:
       - "8000:8000"
@@ -38,7 +38,7 @@ services:
 
   migrate:
     <<: *default-service
-    command: python manage.py migrate
+    command: django-admin migrate
 
   pycharm:
     <<: *default-service

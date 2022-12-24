@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'manifest_loader',
 
-    'app',
+    'app.apps.AppConfig',
 ]
 
 MIDDLEWARE = [
@@ -150,16 +150,3 @@ MANIFEST_LOADER = {
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-
-# Load any settings customized to the local setup.
-try:
-    from .local_settings import *
-except ImportError:
-    pass
-
-# Load any settings customized to the docker setup.
-try:
-    from .docker_settings import *
-except ImportError:
-    pass

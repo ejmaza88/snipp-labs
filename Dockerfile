@@ -15,20 +15,20 @@ RUN apt update \
 
 
 FROM service-base AS service-builder
-RUN mkdir -p /webapps
-WORKDIR /webapps
+RUN mkdir -p /app
+WORKDIR /app
 RUN pip install -U pip
 COPY requirements.txt requirements.txt
 RUN pip install -r requirements.txt
-COPY . /webapps/
+COPY ./ /app/
 
 
-FROM python:3.9.12-slim-buster AS service-transfer
+FROM python:3.9.12-slim-buster AS service-python
 COPY --from=service-builder /usr/local/lib/python3.9/site-packages/ /usr/local/lib/python3.9/site-packages/
 COPY --from=service-builder /usr/local/bin/ /usr/local/bin/
 
 
-FROM service-transfer AS service-django
-WORKDIR /webapps
-ENV PYTHONPATH /webapps
+FROM service-python AS service-django
+WORKDIR /app
+ENV PYTHONPATH /app
 CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]

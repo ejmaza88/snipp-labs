@@ -4,18 +4,12 @@ x-service: &default-service
   build:
     context: .
   image: maza88/snipps:latest
-  environment:
-    DB_HOST: db
-    DB_NAME: snipps
-    DB_USER: root
-    DB_PASSWORD: snippspass1234
-    DJANGO_SETTINGS_MODULE: snipps.settings
-    PYTHONBREAKPOINT: $(PYTHONBREAKPOINT)
-    PYTHONSTARTUP: /webapps/shell_startup.py
+  env_file:
+    - .django_env
   restart: "no"
-  working_dir: /webapps
+  working_dir: /app
   volumes:
-    - .:/webapps
+    - ./:/app
   depends_on:
     - db
   networks:

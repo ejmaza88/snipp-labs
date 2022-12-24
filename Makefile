@@ -1,4 +1,4 @@
-.PHONY: build shell django-shell django-server
+.PHONY: build shell django-shell server watch
 
 build:
 	@docker build -t maza88/snipps:latest .
@@ -9,5 +9,9 @@ shell:
 django-shell:
 	@docker compose run --rm django-shell
 
-django-server:
+server:
 	@docker compose up django-server
+
+watch:
+	@docker compose up npm-watch
+

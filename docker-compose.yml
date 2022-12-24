@@ -15,6 +15,13 @@ x-service: &default-service
   networks:
     - db_net
 
+x-service: &default-node
+    image: node:14.19.1-alpine3.14
+    working_dir: /snipps
+    volumes:
+      - ./snipps:/snipps
+
+
 services:
   django-server:
     <<: *default-service
@@ -62,6 +69,19 @@ services:
       - "5432:5432"
     networks:
       - db_net
+
+  npm-watch:
+    <<: *default-node
+    command: npm run watch
+    ports:
+      - "7654:7654"
+    depends_on:
+      npm-install:
+        condition: service_completed_successfully
+
+  npm-install:
+    <<: *default-node
+    command: npm install
 
 networks:
   db_net:

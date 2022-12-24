@@ -14,3 +14,8 @@ DATABASES = {
         'PORT': '5432',
     }
 }
+
+MANIFEST_LOADER = {
+    'manifest_file': Path(BASE_DIR, 'build', 'manifest.dev.json'),
+    'cache': not DEBUG
+}

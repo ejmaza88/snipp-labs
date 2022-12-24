@@ -15,3 +15,7 @@ dev_bundles/
 npm-debug.log
 snipps/db.sqlite3
 snipps/.env
+
+snipps/startup/extra_startup.py
+
+docker-compose.override.yml

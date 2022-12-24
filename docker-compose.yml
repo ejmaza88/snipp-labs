@@ -1,0 +1,90 @@
+version: "3.9"
+
+x-service: &default-service
+  build:
+    context: .
+  image: maza88/snipps:latest
+  env_file:
+    - .django.env
+  restart: "no"
+  working_dir: /app
+  volumes:
+    - ./:/app
+  depends_on:
+    - db
+  networks:
+    - db_net
+
+x-service: &default-node
+    image: node:14.19.1-alpine3.14
+    working_dir: /snipps
+    volumes:
+      - ./snipps:/snipps
+
+
+services:
+  django-server:
+    <<: *default-service
+    entrypoint: /app/scripts/db-check.sh
+    stdin_open: true
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_started
+      migrate:
+        condition: service_completed_successfully
+
+  django-shell:
+    <<: *default-service
+    command: django-admin shell
+
+  shell:
+    <<: *default-service
+    command: /bin/bash
+
+  migrate:
+    <<: *default-service
+    command: django-admin migrate
+
+  pycharm:
+    <<: *default-service
+    entrypoint: [ ]
+    command: [ ]
+    networks:
+      - db_net
+    depends_on:
+      db:
+        condition: service_started
+
+  db:
+    image: postgres:14.2-alpine3.15
+    environment:
+      POSTGRES_DB: snipps
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: snippspass1234
+    volumes:
+      - db_data:/var/lib/postgresql
+    ports:
+      - "5432:5432"
+    networks:
+      - db_net
+
+  npm-watch:
+    <<: *default-node
+    command: npm run watch
+    ports:
+      - "7654:7654"
+    depends_on:
+      npm-install:
+        condition: service_completed_successfully
+
+  npm-install:
+    <<: *default-node
+    command: npm install
+
+networks:
+  db_net:
+
+volumes:
+  db_data:

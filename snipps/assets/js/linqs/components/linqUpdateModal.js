@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect, useRef} from "react";
 import {MDBBtn, MDBCol, MDBInput, MDBRow} from "mdb-react-ui-kit";
 import {Modal} from "bootstrap";
 import {toJS} from "mobx";
@@ -11,9 +11,11 @@ const LinqUpdate = observer( (props) => {
   const {updateLinqStore, linqStore} = props.store
 
   // hooks
+  const toggle = useRef(false)
   const [linqLabel, setLinqLabel] = useState("")
   const [linqUrlList, setLinqUrlList] = useState([])
   const [newURL, setNewURL] = useState("")
+  const [archiveIdList, setArchiveIdList] = useState([])
 
   // functions
   useEffect(() => {
@@ -22,11 +24,14 @@ const LinqUpdate = observer( (props) => {
     const storeLinq = toJS(updateLinqStore.linq)
     const isEmpty = Object.keys(storeLinq).length === 0
 
+    // Since this useEffect will run everytime the modal is shown
+    // reset the values or populate from store
     setLinqLabel(isEmpty ? "" : storeLinq.name)
     setLinqUrlList(isEmpty ? [] : storeLinq.urls)
     setNewURL("")
+    setArchiveIdList([])
 
-  }, [toJS(updateLinqStore.linqIndex)])
+  }, [toJS(updateLinqStore.linqIndex), toggle])
 
   const handleLabelChange = (e) => setLinqLabel(e.target.value)
   const handleNewURLChange = (e) => setNewURL(e.target.value)
@@ -34,8 +39,9 @@ const LinqUpdate = observer( (props) => {
     setLinqUrlList([{url: newURL}, ...linqUrlList])
     setNewURL("")
   }
-  const handleRemoveUrl = (e) => {
-    console.log(e.target.dataset)
+  const handleRemoveUrl = (urlId) => {
+    setLinqUrlList(linqUrlList.filter(i => i.id !== urlId))
+    setArchiveIdList([...archiveIdList, urlId])
   }
 
   const handleSubmit = (e) => {
@@ -54,15 +60,22 @@ const LinqUpdate = observer( (props) => {
       linq_id: updateLinqStore.linq.id,
       linq_name: linqLabel,
       urls: urlsToSubmit,
+      archived_id_list: archiveIdList,
     }
 
+
+    // // API call
     linqUpdate(request_data, (data) => {
       linqStore.updateItems(updateLinqStore.linqIndex, data.linq)
       toggleUpdateModal()
     })
   }
 
-  const toggleUpdateModal = () => Modal.getInstance(document.querySelector('#linqUpdateModal')).toggle();
+  //
+  const toggleUpdateModal = () => {
+    Modal.getInstance(document.querySelector('#linqUpdateModal')).toggle()
+    toggle.current = !toggle.current
+  }
 
   const currentLinqs = () => {
     return linqUrlList.map((item, index) => {
@@ -92,7 +105,7 @@ const LinqUpdate = observer( (props) => {
         </div>
 
         <div className="modal-footer">
-          <MDBBtn type='button' color='danger' size='sm' data-bs-dismiss="modal"> Cancel </MDBBtn>
+          <MDBBtn type='button' color='danger' size='sm' onClick={toggleUpdateModal}> Cancel </MDBBtn>
           <MDBBtn type='submit' color='primary' size='sm'> Update </MDBBtn>
         </div>
       </form>
@@ -110,7 +123,7 @@ const ModalCore = (props) => {
         <div className="modal-content">
           <div className="modal-header">
             <h5 className="modal-title" id="staticBackdropLabel">Update LinQ</h5>
-            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"/>
+            {/*<button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"/>*/}
           </div>
           {children}
         </div>
@@ -126,7 +139,7 @@ const StoredURL = ({urlId, url, handleOnClick}) => {
     <>
       <div className='row'>
         <div className='col-1'>
-          <MDBBtn rounded size='sm' color='light' className='py-0 m-0' data-url-id={urlId} onClick={handleOnClick}>
+          <MDBBtn rounded size='sm' color='light' className='py-0 m-0' onClick={() => handleOnClick(urlId)}>
             <i className="fas fa-minus-circle" color="danger"/>
           </MDBBtn>
         </div>

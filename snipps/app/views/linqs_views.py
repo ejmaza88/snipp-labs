@@ -176,10 +176,14 @@ def update_linq(request):
 
     # create all the new urls
     LinqUrl.objects.bulk_create(
-        [LinqUrl(label_id=data["linq_id"], url=url["url"]) for url in data["urls"] if not url.get("id")]
+        (LinqUrl(
+            label_id=data["linq_id"],
+            url=url["url"]
+        ) for url in data["urls"] if not url.get("id"))
     )
 
-    LinqUrl.objects.filter(id__in=[]).update(archived=True)
+    # archive linq urls
+    LinqUrl.objects.filter(id__in=data.get("archived_id_list")).update(archived=True)
 
     linq.refresh_from_db()
 

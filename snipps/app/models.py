@@ -80,7 +80,7 @@ class LinqLabel(ArchiveModel):
     """
 
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=200)
     added = models.DateTimeField(null=True, blank=True)
 
     timestamp = models.DateTimeField(auto_now_add=True)
@@ -102,7 +102,7 @@ class LinqUrl(ArchiveModel):
     """
 
     label = models.ForeignKey(LinqLabel, on_delete=models.CASCADE)
-    url = models.CharField(max_length=250)
+    url = models.TextField()
 
     timestamp = models.DateTimeField(auto_now_add=True)
     last_modified = models.DateTimeField(auto_now=True)

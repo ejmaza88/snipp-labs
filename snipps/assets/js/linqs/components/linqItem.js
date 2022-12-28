@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import { MDBCard } from 'mdb-react-ui-kit';
 // import { confirmation } from "../../helpers/helpers";
-import { linqDelete } from "../../helpers/network";
+import SnippsAPI from "../../helpers/network";
 import { Modal } from 'bootstrap';
 import ConfirmationModal from '@leafygreen-ui/confirmation-modal';
 // import { toJS } from "mobx";
@@ -23,7 +23,7 @@ export default function LinqItem(props) {
   // delete an existing Linq item
   const deleteLinq = () => {
     const params = {'linq_id': item.id}
-    linqDelete(params, () => {
+    SnippsAPI.linqDelete(params, () => {
       deleteLinqFunc(itemIndex)
       setOpen(false)
     })

@@ -25,7 +25,7 @@ axios.defaults.headers.common['contentType'] = 'application/json';
 /*
   Common network call body
 * */
-const getNetworkCall = (url, params, callback) => {
+const GET = (url, params, callback) => {
   axios.get(url, {params: params})
     .then(resp => {
 
@@ -41,8 +41,24 @@ const getNetworkCall = (url, params, callback) => {
     });
 }
 
-const postNetworkCall = (url, data, callback) => {
+const POST = (url, data, callback) => {
   axios.post(url, data)
+    .then(resp => {
+
+      if (resp.data.success) {
+        callback(resp.data)
+
+      } else {
+        // show generic error
+      }
+    })
+    .catch(err => {
+      console.log(err)
+    });
+}
+
+const PUT = (url, data, callback) => {
+  axios.put(url, data)
     .then(resp => {
 
       if (resp.data.success) {
@@ -63,29 +79,17 @@ const postNetworkCall = (url, data, callback) => {
 *   CATEGORY NETWORK API
 *
 * */
-export const addCategoryAPI = (data, callback) => {
-  postNetworkCall(
-    '/api/linqs/add_category',
-    data,
-    callback
-  )
+const categoryAdd = (data, callback) => {
+  POST('/api/linqs/add_category', data, callback)
 }
 
-export const categoryDelete = (data, callback) => {
-  postNetworkCall(
-    '/api/linqs/delete_category',
-    data,
-    callback
-  )
+const categoryDelete = (data, callback) => {
+  POST('/api/linqs/delete_category', data, callback)
 }
 
 
-export const getCategoryLinqs = (params, callback) => {
-  getNetworkCall(
-    '/api/linqs/get_category_linqs',
-    params,
-    callback
-  )
+const categoryLinqs = (params, callback) => {
+  GET('/api/linqs/get_category_linqs', params, callback)
 }
 
 
@@ -94,35 +98,30 @@ export const getCategoryLinqs = (params, callback) => {
 *   LABEL/LINQ NETWORK API
 *
 * */
-export const addLinqAPI = (data, callback) => {
-  postNetworkCall(
-    '/api/linqs/add',
-    data,
-    callback
-  )
+const linqAdd = (data, callback) => {
+  POST('/api/linqs/add', data, callback)
 }
 
-export const linqDelete = (data, callback) => {
-  postNetworkCall(
-    '/api/linqs/delete_linq',
-    data,
-    callback
-  )
+const linqDelete = (data, callback) => {
+  POST('/api/linqs/delete_linq', data, callback)
 }
 
-export const linqUpdate = (data, callback) => {
-  postNetworkCall(
-    '/api/linqs/update',
-    data,
-    callback
-  )
+const linqUpdate = (data, callback) => {
+  POST('/api/linqs/update', data, callback)
 }
 
 
-export const linqSearch = (params, callback) => {
-  getNetworkCall(
-    '/api/linqs/search',
-    params,
-    callback
-  )
+const linqSearch = (params, callback) => {
+  GET('/api/linqs/search', params, callback)
+}
+
+
+export default {
+  categoryAdd,
+  categoryDelete,
+  categoryLinqs,
+  linqAdd,
+  linqDelete,
+  linqUpdate,
+  linqSearch,
 }

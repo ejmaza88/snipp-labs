@@ -1,6 +1,6 @@
 import React from 'react';
 import { removeNewItemClass } from "../../helpers/helpers";
-import { getCategoryLinqs, categoryDelete } from "../../helpers/network";
+import SnippsAPI from "../../helpers/network";
 import { confirmation } from "../../helpers/helpers";
 // import { toJS } from "mobx";
 
@@ -22,7 +22,7 @@ export default function CategoryItem( props) {
 
     // load the item for the selected category
     // from API call
-    getCategoryLinqs(params, (data) => loadLinqItemsFunc(data.categoryLinqs))
+    SnippsAPI.categoryLinqs(params, (data) => loadLinqItemsFunc(data.categoryLinqs))
 
     makeCategoryActiveFunc(itemIndex, item.id)
   }
@@ -35,7 +35,7 @@ export default function CategoryItem( props) {
       `Are you sure you want to delete '${item.name}'`,
       () => {
         // delete category API call
-        categoryDelete(params, () => deleteCategoryFunc(itemIndex))
+        SnippsAPI.categoryDelete(params, () => deleteCategoryFunc(itemIndex))
       }
     )
   }

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { observer } from "mobx-react-lite";
 import { MDBBtn, MDBCol, MDBRow, MDBInput } from 'mdb-react-ui-kit';
-import { addLinqAPI } from "../../helpers/network";
+import SnippsAPI from "../../helpers/network";
 import { toJS } from "mobx";
 
 
@@ -25,7 +25,7 @@ const AddLinq = observer( (props) => {
     const params = {label: label, url: url, category_id: categoryStore.activeItemId}
 
     // network call
-    addLinqAPI(params, (data) => {
+    SnippsAPI.linqAdd(params, (data) => {
 
       linqStore.newItem(data.newLinq)
 

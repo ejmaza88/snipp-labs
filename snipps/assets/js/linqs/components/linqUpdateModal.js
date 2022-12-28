@@ -3,7 +3,7 @@ import {MDBBtn, MDBCol, MDBInput, MDBRow} from "mdb-react-ui-kit";
 import {Modal} from "bootstrap";
 import {toJS} from "mobx";
 import {observer} from "mobx-react-lite";
-import {linqUpdate} from "../../helpers/network";
+import SnippsAPI from "../../helpers/network";
 
 
 const LinqUpdate = observer( (props) => {
@@ -31,7 +31,7 @@ const LinqUpdate = observer( (props) => {
     setNewURL("")
     setArchiveIdList([])
 
-  }, [toJS(updateLinqStore.linqIndex), toggle])
+  }, [toJS(updateLinqStore.linqIndex)])
 
   const handleLabelChange = (e) => setLinqLabel(e.target.value)
   const handleNewURLChange = (e) => setNewURL(e.target.value)
@@ -65,7 +65,7 @@ const LinqUpdate = observer( (props) => {
 
 
     // // API call
-    linqUpdate(request_data, (data) => {
+    SnippsAPI.linqUpdate(request_data, (data) => {
       linqStore.updateItems(updateLinqStore.linqIndex, data.linq)
       toggleUpdateModal()
     })

@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useRef} from "react";
 import { MDBInput } from 'mdb-react-ui-kit';
-import {linqSearch, getCategoryLinqs} from "../../helpers/network";
+import SnippsAPI from "../../helpers/network";
 import { toJS } from "mobx";
 
 
@@ -12,7 +12,7 @@ export default function LinqSearch(props) {
   const rendered = useRef(false)
 
   const displaySearchedLinqs = () => {
-    linqSearch({search_term: searchTerm}, data => store.linqStore.loadFromArray(data.searchedLinqs))
+    SnippsAPI.linqSearch({search_term: searchTerm}, data => store.linqStore.loadFromArray(data.searchedLinqs))
   }
 
   const displaySelectedCategoryLinqs = () => {
@@ -20,7 +20,7 @@ export default function LinqSearch(props) {
       'category_id': store.categoryStore.activeItemId,
       'is_new': toJS(store.categoryStore.items).filter(i => i.id === store.categoryStore.activeItemId)[0].new_item,
     }
-    getCategoryLinqs(params, data => store.linqStore.loadFromArray(data.categoryLinqs))
+    SnippsAPI.categoryLinqs(params, data => store.linqStore.loadFromArray(data.categoryLinqs))
   }
 
   useEffect(() => {

@@ -9,7 +9,7 @@ import RootStore from "../store/linqs/rootStore";
 import { LinqList } from "./components/linqList";
 import { useComponentWillMount } from "../helpers/helpers";
 import { AddLinq } from "./components/addLinq";
-import {LinqUpdate} from "./components/linqUpdateModal";
+import { LinqUpdate } from "./components/linqUpdateModal";
 
 
 import '../../css/linqs.css'

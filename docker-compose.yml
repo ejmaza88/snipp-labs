@@ -49,8 +49,8 @@ services:
 
   pycharm:
     <<: *default-service
-    entrypoint: [ ]
-    command: [ ]
+    entrypoint: []
+    command: []
     networks:
       - db_net
     depends_on:

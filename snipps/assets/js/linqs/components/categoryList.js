@@ -1,7 +1,7 @@
 import React from 'react';
 import { observer } from "mobx-react-lite";
 import CategoryItem from "./categoryItem";
-import {getCategoryLinqs} from "../../helpers/network";
+import SnippsAPI from "../../helpers/network"
 // import { toJS } from "mobx";
 
 
@@ -23,7 +23,7 @@ const CategoryList = observer( (props) => {
         'category_id': defaultCategory.id,
         'is_new': defaultCategory.new_item,
       }
-      getCategoryLinqs(params, (data) => {
+      SnippsAPI.categoryLinqs(params, (data) => {
         linqStore.loadFromArray(data.categoryLinqs)
         categoryStore.updateActiveItem(0)  // TODO: item index, rename this in store
         categoryStore.updateActiveItemId(defaultCategory.id)

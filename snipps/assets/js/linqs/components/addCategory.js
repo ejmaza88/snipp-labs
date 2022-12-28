@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { observer } from "mobx-react-lite";
 import { MDBBtn, MDBInput } from 'mdb-react-ui-kit';
-import { addCategoryAPI } from "../../helpers/network";
+import SnippsAPI from "../../helpers/network";
 import FadeIn from 'react-fade-in';
 
 
@@ -60,7 +60,7 @@ const AddForm = observer( (props) => {
     const newItemIndex = itemIndex(name)
 
     // network call to add category
-    addCategoryAPI(params, (data) => {
+    SnippsAPI.categoryAdd(params, (data) => {
       categoryStore.newItem(newItemIndex, data.obj)
 
       // if new category is added for the first time, mark active

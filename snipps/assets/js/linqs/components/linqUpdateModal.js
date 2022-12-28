@@ -11,7 +11,7 @@ const LinqUpdate = observer( (props) => {
   const {updateLinqStore, linqStore} = props.store
 
   // hooks
-  const toggle = useRef(false)
+  const [toggle, setToggle]= useState(false)  // used to hydrate form everytime update modal is shown
   const [linqLabel, setLinqLabel] = useState("")
   const [linqUrlList, setLinqUrlList] = useState([])
   const [newURL, setNewURL] = useState("")
@@ -31,7 +31,7 @@ const LinqUpdate = observer( (props) => {
     setNewURL("")
     setArchiveIdList([])
 
-  }, [toJS(updateLinqStore.linqIndex)])
+  }, [toJS(updateLinqStore.linqIndex), toggle])
 
   const handleLabelChange = (e) => setLinqLabel(e.target.value)
   const handleNewURLChange = (e) => setNewURL(e.target.value)
@@ -74,7 +74,8 @@ const LinqUpdate = observer( (props) => {
   //
   const toggleUpdateModal = () => {
     Modal.getInstance(document.querySelector('#linqUpdateModal')).toggle()
-    toggle.current = !toggle.current
+    // toggle.current = !toggle.current
+    setToggle(!toggle)
   }
 
   const currentLinqs = () => {

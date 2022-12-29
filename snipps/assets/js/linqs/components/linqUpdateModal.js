@@ -74,7 +74,6 @@ const LinqUpdate = observer( (props) => {
   //
   const toggleUpdateModal = () => {
     Modal.getInstance(document.querySelector('#linqUpdateModal')).toggle()
-    // toggle.current = !toggle.current
     setToggle(!toggle)
   }
 

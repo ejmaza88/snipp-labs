@@ -1,15 +1,13 @@
-import json
-
 from django.contrib.auth.decorators import login_required
 # from django.db import connection
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
-from django.views.decorators.http import require_POST, require_GET
 from rest_framework import status
 from rest_framework.decorators import api_view
 
 from app.models import Category, LinqLabel, LinqUrl
 from app.serializers import CategorySerializer, LinqLabelSerializer
+from app.utils import SuccessJsonResponse
 
 
 @login_required
@@ -62,32 +60,34 @@ def add_category(request):
 
     if category_serializer.is_valid():
         category_serializer.save()
-        context = {'success': True, 'obj': category_serializer.data, 'status': status.HTTP_201_CREATED}
-        return JsonResponse(context)
+        context = {'obj': category_serializer.data, 'status': status.HTTP_201_CREATED}
+        return SuccessJsonResponse(context)
 
-    context = {'success': True, 'obj': category_serializer.errors, 'status': status.HTTP_400_BAD_REQUEST}
+    context = {'obj': category_serializer.errors, 'status': status.HTTP_400_BAD_REQUEST}
     return JsonResponse(context)
 
 
 @login_required
-@require_POST
+@api_view(['POST'])
 def archive_category(request):
     """
     Archives a category
     """
 
-    data = json.loads(request.body)
+    data = request.data
     Category.objects.filter(pk=data.get('category_id')).update(archived=True)
 
-    return JsonResponse({'success': True})
+    return SuccessJsonResponse()
 
 
 @login_required
-@require_GET
+@api_view(['GET'])
 def category_linqs(request):
     """
     Return all category linQs when the category name is clicked
     """
+
+    # print(flush=True)
 
     data = request.GET
     category_id = data.get('category_id')
@@ -98,20 +98,19 @@ def category_linqs(request):
     if is_new == 'true':
         Category.objects.filter(pk=category_id).update(new_item=False)
 
-    return JsonResponse({
+    return SuccessJsonResponse({
         'categoryLinqs': LinqLabelSerializer(instance=linq_list, many=True).data,
-        'success': True
     })
 
 
 @login_required
-@require_POST
+@api_view(['POST'])
 def add_linq(request):
     """
     Add a new LinQ, creates Label and URLs
     """
 
-    data = json.loads(request.body)
+    data = request.data
     cat_id = data.get('category_id')
     label = data.get('label')
     url_list = data.get('url').split(',')
@@ -124,29 +123,26 @@ def add_linq(request):
 
     LinqUrl.objects.bulk_create(objs=(url_obj for url_obj in url_list_objs))
 
-    context = {
-        'success': True,
-        'newLinq': LinqLabelSerializer(instance).data
-    }
-
-    return JsonResponse(context)
+    return SuccessJsonResponse({
+        'newLinq': LinqLabelSerializer(instance).data,
+    })
 
 
 @login_required
-@require_POST
+@api_view(['POST'])
 def archive_linq(request):
     """
     Archive a new LinQ
     """
 
-    data = json.loads(request.body)
+    data = request.data
     LinqLabel.objects.filter(pk=data.get('linq_id')).update(archived=True)
 
-    return JsonResponse({'success': True})
+    return SuccessJsonResponse()
 
 
 @login_required
-@require_GET
+@api_view(['GET'])
 def search_linq(request):
     """
     Search LinQs given a search term
@@ -155,20 +151,19 @@ def search_linq(request):
     term = request.GET.get("search_term")
     linq_list = LinqLabel.objects.filter(name__icontains=term).select_related('category').prefetch_related('linqurl_set')
 
-    return JsonResponse({
-        "success": True,
+    return SuccessJsonResponse({
         "searchedLinqs": LinqLabelSerializer(instance=linq_list, many=True).data,
     })
 
 
 @login_required
-@require_POST
+@api_view(['POST'])
 def update_linq(request):
     """
     Update LinQ label or urls (add/remove)
     """
 
-    data = json.loads(request.body)
+    data = request.data
 
     linq = LinqLabel.objects.get(pk=data["linq_id"])
     linq.name = data["linq_name"]
@@ -187,7 +182,6 @@ def update_linq(request):
 
     linq.refresh_from_db()
 
-    return JsonResponse({
-        'success': True,
-        "linq": LinqLabelSerializer(linq).data
+    return SuccessJsonResponse({
+        "linq": LinqLabelSerializer(linq).data,
     })

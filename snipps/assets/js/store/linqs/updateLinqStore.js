@@ -4,6 +4,7 @@ export default class UpdateLinqStore {
   linqIndex = null
   linq = {}
   urlList = []
+  idListToArchive = []  // ID's in this list will get archived
 
   constructor() {
     makeObservable(this, {
@@ -11,12 +12,14 @@ export default class UpdateLinqStore {
       linqIndex: observable,
       linq: observable,
       urlList: observable,
+      idListToArchive: observable,
 
       // actions
       loadLinq: action,
       loadUrlList: action,
-      // removeUrl: action,
-      // addUrl: action,
+      addUrlToList: action,
+      addIdToArchive: action,
+      // removeUrlFromList: action
     })
   }
 
@@ -26,18 +29,14 @@ export default class UpdateLinqStore {
     this.loadUrlList(linq.urls)
   }
 
-  loadUrlList = (linkList) => {
-    this.urlList = linkList
-  }
+  loadUrlList = urlList => this.urlList = urlList
 
-  // Commenting bellow, using useState instead of store,
-  // not sure if the best idea, not so relevant at the moment.
-  // removeUrl = (linkIndex) => {
+  addUrlToList = (url) => this.urlList.push(url)
+
+  addIdToArchive = (id) => this.idListToArchive.push(id)
+
+  // removeUrlFromList = (linkIndex) => {
   //   this.urlList.splice(linkIndex, 1)
-  // }
-  //
-  // addUrl = (url) => {
-  //   this.urlList.push(url)
   // }
 
 }

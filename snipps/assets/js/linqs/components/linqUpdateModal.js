@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from "react";
+import React, {useState, useEffect} from "react";
 import {MDBBtn, MDBCol, MDBInput, MDBRow} from "mdb-react-ui-kit";
 import {Modal} from "bootstrap";
 import {toJS} from "mobx";
@@ -11,11 +11,8 @@ const LinqUpdate = observer( (props) => {
   const {updateLinqStore, linqStore} = props.store
 
   // hooks
-  const [toggle, setToggle]= useState(false)  // used to hydrate form everytime update modal is shown
   const [linqLabel, setLinqLabel] = useState("")
-  const [linqUrlList, setLinqUrlList] = useState([])
   const [newURL, setNewURL] = useState("")
-  const [archiveIdList, setArchiveIdList] = useState([])
 
   // functions
   useEffect(() => {
@@ -27,32 +24,30 @@ const LinqUpdate = observer( (props) => {
     // Since this useEffect will run everytime the modal is shown
     // reset the values or populate from store
     setLinqLabel(isEmpty ? "" : storeLinq.name)
-    setLinqUrlList(isEmpty ? [] : storeLinq.urls)
     setNewURL("")
-    setArchiveIdList([])
 
-  }, [toJS(updateLinqStore.linqIndex), toggle])
+  }, [toJS(updateLinqStore.linqIndex)])
 
   const handleLabelChange = (e) => setLinqLabel(e.target.value)
   const handleNewURLChange = (e) => setNewURL(e.target.value)
   const handleUrlList = () => {
-    setLinqUrlList([{url: newURL}, ...linqUrlList])
+    updateLinqStore.addUrlToList({url: newURL})
     setNewURL("")
   }
   const handleRemoveUrl = (urlId) => {
-    setLinqUrlList(linqUrlList.filter(i => i.id !== urlId))
-    setArchiveIdList([...archiveIdList, urlId])
+    updateLinqStore.loadUrlList(updateLinqStore.urlList.filter(i => i.id !== urlId))
+    updateLinqStore.addIdToArchive(urlId)
   }
 
   const handleSubmit = (e) => {
     e.preventDefault()
 
-    let urlsToSubmit = linqUrlList
+    let urlsToSubmit = updateLinqStore.urlList
 
     // this is a quick hack to bypass having to click the "+" button
     // to add the new linQ before summiting.
     if (newURL.trim().length !== 0) {
-      urlsToSubmit = [{url: newURL}, ...linqUrlList]
+      urlsToSubmit = [{url: newURL}, ...updateLinqStore.urlList]
       handleUrlList()
     }
 
@@ -60,7 +55,7 @@ const LinqUpdate = observer( (props) => {
       linq_id: updateLinqStore.linq.id,
       linq_name: linqLabel,
       urls: urlsToSubmit,
-      archived_id_list: archiveIdList,
+      archived_id_list: updateLinqStore.idListToArchive,
     }
 
 
@@ -74,11 +69,10 @@ const LinqUpdate = observer( (props) => {
   //
   const toggleUpdateModal = () => {
     Modal.getInstance(document.querySelector('#linqUpdateModal')).toggle()
-    setToggle(!toggle)
   }
 
   const currentLinqs = () => {
-    return linqUrlList.map((item, index) => {
+    return updateLinqStore.urlList.map((item, index) => {
       return <StoredURL key={index} urlId={item.id} url={item.url} handleOnClick={handleRemoveUrl}/>
     })
   }

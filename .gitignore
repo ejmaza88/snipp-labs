@@ -2,8 +2,12 @@
 __pycache__
 .idea
 
+venv
+.venv
+
 
 snipps/snipps/local_settings.py
+snipps/snipps/settings/dev.py
 .DS_Store
 
 /snipps/app/data/

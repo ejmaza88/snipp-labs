@@ -1,11 +1,12 @@
 import React, { useState, useRef, useEffect } from "react";
 import { observer } from "mobx-react-lite";
 import { MDBBtn, MDBInput } from 'mdb-react-ui-kit';
-import { addCategory } from "../../helpers/network";
+import SnippsAPI from "../../helpers/network";
 import FadeIn from 'react-fade-in';
 
 
 export default function AddCategory(props) {
+  // The toggle icon to hide/show the form
   const toggle = useRef(false)
   const [visible, setVisible] = useState(false)
 
@@ -19,20 +20,11 @@ export default function AddCategory(props) {
   return (
     <>
       <div className='mb-1'>
-      <MDBBtn rounded size='sm' color='light' className='py-0 mb-3' onClick={addToggle}>
-        {
-          visible ?
-            <i className="fas fa-times"/>
-            :
-            <i className="fas fa-plus"/>
-        }
-      </MDBBtn>
-        {
-          visible ?
-            <AddForm {...props} toggle={addToggle}/>
-            :
-            null
-        }
+        <MDBBtn rounded size='sm' color='light' className='py-0 mb-3' onClick={addToggle}>
+          { visible ? <i className="fas fa-times"/> : <i className="fas fa-plus"/> }
+        </MDBBtn>
+
+        { visible ? <AddForm {...props} toggle={addToggle}/> : null }
       </div>
     </>
   )
@@ -43,6 +35,7 @@ export default function AddCategory(props) {
 const AddForm = observer( (props) => {
 
   const { categoryStore } = props.store
+
   // hooks
   const [name, setName] = useState('')
 
@@ -51,7 +44,7 @@ const AddForm = observer( (props) => {
     setName(e.target.value)
   }
 
-  // get item index so it can be inserted in the array
+  // get item index and insert in the array
   const itemIndex = (itemName) => {
     const items = categoryStore.items.map(i => i.name)
     items.push(itemName)
@@ -63,11 +56,18 @@ const AddForm = observer( (props) => {
   const submitForm = (e) => {
     e.preventDefault();
 
-    const params = {name: name, new_item: true}
+    const params = {name: name}
     const newItemIndex = itemIndex(name)
 
-    addCategory(params, (item) => {
-      categoryStore.newItem(newItemIndex, item)
+    // network call to add category
+    SnippsAPI.categoryAdd(params, (data) => {
+      categoryStore.newItem(newItemIndex, data.obj)
+
+      // if new category is added for the first time, mark active
+      if (categoryStore.items.length === 1) {
+        categoryStore.updateActiveItem(newItemIndex)
+        categoryStore.updateActiveItemId(data.obj.id)
+      }
     })
 
     props.toggle()
@@ -82,7 +82,15 @@ const AddForm = observer( (props) => {
       <FadeIn>
         <form role='form' onSubmit={submitForm}>
           <MDBInput label='Create Category' id='add-category' type='text' size='sm' className='mb-2' onChange={changeName}/>
-          <MDBBtn size='sm' color='light' className='py-1 mb-2 float-end btn-block' type='submit' disabled={name.length === 0}>Add</MDBBtn>
+          <MDBBtn
+            size='sm'
+            color='primary'
+            className='py-1 mb-2 float-end btn-block'
+            type='submit'
+            disabled={name.length === 0}
+          >
+            Add
+          </MDBBtn>
           <br/>
         </form>
       </FadeIn>

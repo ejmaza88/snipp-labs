@@ -1,32 +1,25 @@
 from django.urls import path
 
-from . import views
-
-app_name = 'app'
+from app import views
 
 
 """
 LINQS URLS
 """
-urlpatterns = [
+linq_urlpatterns = [
     path('', views.home, name='home'),
 
-    # Linqs
+    # Linqs main page
     path('linqs/', views.linqs, name='linqs'),
 
-    # Linqs API
+    # Categories API
     path('api/linqs/add_category', views.add_category, name='add-category'),
     path('api/linqs/get_category_linqs', views.category_linqs, name='get-category-linqs'),
     path('api/linqs/delete_category', views.archive_category, name='archive-category'),
-]
 
-
-"""
-SNIPPETS URLS
-"""
-urlpatterns = urlpatterns + [
-    # Snippets
-    path('snippets/', views.snippets, name='snippets'),
-
-    # Snippets API
+    # Linqs API
+    path('api/linqs/add', views.add_linq, name='add-linq'),
+    path('api/linqs/delete_linq', views.archive_linq, name='archive-linq'),
+    path('api/linqs/search', views.search_linq, name='search-linq'),
+    path('api/linqs/update', views.update_linq, name='update-linq'),
 ]

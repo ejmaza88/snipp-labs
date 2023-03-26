@@ -1,8 +1,17 @@
 from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin
 
-from .models import Category
+from .models import User, Category, LinqLabel, LinqUrl
 
 # Register your models here.
+
+
+@admin.register(User)
+class CustomUserAdmin(UserAdmin):
+    list_display = ['username', 'key', 'first_name', 'last_name']
+    fieldsets = (
+        ('Unique Key', {'fields': ['key']}),
+    ) + UserAdmin.fieldsets
 
 
 class ArchivedModelAdmin(admin.ModelAdmin):
@@ -24,7 +33,13 @@ class CategoryAdmin(ArchivedModelAdmin):
     search_fields = ('name',)
 
 
-# @admin.register(Linq)
-# class StuffAdmin(admin.ModelAdmin):
-#     list_display = ('category', 'label', 'url')
-#     search_fields = ('category', 'label')
+@admin.register(LinqLabel)
+class LinqLabelAdmin(ArchivedModelAdmin):
+    list_display = ('category', 'name')
+    search_fields = ('category', 'name')
+
+
+@admin.register(LinqUrl)
+class LinqUrlAdmin(ArchivedModelAdmin):
+    list_display = ('label', 'url')
+    search_fields = ('label', 'url')

@@ -2,12 +2,24 @@
 __pycache__
 .idea
 
+venv
+.venv
+
 
 snipps/snipps/local_settings.py
+snipps/snipps/settings/dev.py
+.DS_Store
 
+/snipps/app/data/
+/snipps/app/fixtures/
 
 node_modules/
 manifest.dev.json
 dev_bundles/
 npm-debug.log
 snipps/db.sqlite3
+snipps/.env
+
+snipps/startup/extra_startup.py
+
+docker-compose.override.yml

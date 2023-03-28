@@ -53,5 +53,9 @@
     "webpack-manifest-plugin": "^3.1.1",
     "webpack-merge": "^5.7.3"
   },
-  "dependencies": {}
+  "dependencies": {
+    "@monaco-editor/react": "^4.4.6",
+    "ace-builds": "^1.16.0",
+    "react-ace": "^10.1.0"
+  }
 }

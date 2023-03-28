@@ -1,19 +1,20 @@
 {% extends 'app/base.html' %}
 {% load manifest %}
+{% load js_data %}
 
 
-{% block title %} Linqs {% endblock title %}
+{% block title %} Snippets {% endblock title %}
 
 
 {% block stylesheets %}
     {{ block.super }}
+    <link href="{% manifest 'snippets.css' %}" rel="stylesheet" />
 {% endblock stylesheets %}
 
 
 {% block content %}
 
     <div class="row">
-        <div>Snippets</div>
         <div id="snippets-root"></div>
     </div>
     
@@ -23,4 +24,6 @@
 
 {% block javascript_footer %}
     {{ block.super }}
+    {{ init_js_data | js_data }}
+    <script type="text/javascript" src="{% manifest 'snippets.js' %}" ></script>
 {% endblock %}

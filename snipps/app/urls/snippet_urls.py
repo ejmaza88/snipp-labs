@@ -11,4 +11,5 @@ snippet_urlpatterns = [
     path('snippets/', views.snippets, name='snippets'),
 
     # Snippets API
+    path('api/snippets/save-update', views.save_update_snippet, name='save-update-snippet'),
 ]

@@ -116,6 +116,16 @@ const linqSearch = (params, callback) => {
 }
 
 
+/*
+*
+*   SNIPPETS NETWORK API
+*
+* */
+const saveUpdateSnippet = (data, callback) => {
+  POST('/api/snippets/save-update', data, callback)
+}
+
+
 export default {
   categoryAdd,
   categoryDelete,
@@ -124,4 +134,5 @@ export default {
   linqDelete,
   linqUpdate,
   linqSearch,
+  saveUpdateSnippet
 }

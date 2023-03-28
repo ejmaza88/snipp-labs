@@ -8,7 +8,7 @@ import { confirmation } from "../../helpers/helpers";
 import 'react-confirm-alert/src/react-confirm-alert.css';
 
 
-export default function CategoryItem( props) {
+export default function CategoryItem(props) {
 
   const { item, active, itemIndex, makeCategoryActiveFunc, deleteCategoryFunc, loadLinqItemsFunc } = props
   const newItemIdentifier = 'text-warning'

@@ -8,7 +8,7 @@ import ConfirmationModal from '@leafygreen-ui/confirmation-modal';
 
 
 export default function LinqItem(props) {
-  const { item, itemIndex, deleteLinqFunc, updateLinqStore } = props
+  const { item, itemIndex, deleteLinqFunc, updateLinqStore, categoryStore } = props
   const [open, setOpen] = useState(false);
 
   // update modal
@@ -22,7 +22,7 @@ export default function LinqItem(props) {
 
   // delete an existing Linq item
   const deleteLinq = () => {
-    const params = {'linq_id': item.id}
+    const params = {'linq_id': item.id, 'category_id': categoryStore.activeItemId}
     SnippsAPI.linqDelete(params, () => {
       deleteLinqFunc(itemIndex)
       setOpen(false)

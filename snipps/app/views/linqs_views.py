@@ -6,6 +6,7 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 
 from app.models import Category, LinqLabel, LinqUrl
+from app.caches.linqs_cache import LinqsCache
 from app.serializers import CategorySerializer, LinqLabelSerializer
 from app.utils import SuccessJsonResponse
 
@@ -22,6 +23,7 @@ def linqs(request):
     """
 
     categories = Category.objects.filter(user=request.user)
+    initial_category_id = categories[0].id
 
     context = {
         'init_js_data': {
@@ -30,13 +32,15 @@ def linqs(request):
     }
 
     if categories:
-        linq_list = LinqLabel.objects.filter(category_id=categories[0].id).select_related('category').prefetch_related('linqurl_set')
+        serialized_linq_list = LinqsCache(initial_category_id).serialized_objects()
+
         context['init_js_data'].update({
-            'initSelectedLinqs': LinqLabelSerializer(instance=linq_list, many=True).data  # 'instance=' is optional
+            'initSelectedLinqs': serialized_linq_list
         })
 
     # for reference, =)
     # selected = categories.filter(pk=categories[0].id).prefetch_related('linqlabel_set', 'linqlabel_set__linqurl_set').get()
+    # 'initSelectedLinqs': LinqLabelSerializer(instance=linq_list_qs, many=True).data  # 'instance=' is optional
 
     return render(request, 'app/linqs.html', context)
 
@@ -93,13 +97,13 @@ def category_linqs(request):
     category_id = data.get('category_id')
     is_new = data.get('is_new')  # has the category name been clicked yet?
 
-    linq_list = LinqLabel.objects.filter(category_id=category_id).select_related('category').prefetch_related('linqurl_set')
+    serialized_linq_list = LinqsCache(category_id).serialized_objects()
 
     if is_new == 'true':
         Category.objects.filter(pk=category_id).update(new_item=False)
 
     return SuccessJsonResponse({
-        'categoryLinqs': LinqLabelSerializer(instance=linq_list, many=True).data,
+        'categoryLinqs': serialized_linq_list,
     })
 
 
@@ -123,6 +127,8 @@ def add_linq(request):
 
     LinqUrl.objects.bulk_create(objs=(url_obj for url_obj in url_list_objs))
 
+    LinqsCache(cat_id).set_needs_caching()
+
     return SuccessJsonResponse({
         'newLinq': LinqLabelSerializer(instance).data,
     })
@@ -137,6 +143,8 @@ def archive_linq(request):
 
     data = request.data
     LinqLabel.objects.filter(pk=data.get('linq_id')).update(archived=True)
+
+    LinqsCache(data.get("category_id")).set_needs_caching()
 
     return SuccessJsonResponse()
 
@@ -181,6 +189,8 @@ def update_linq(request):
     LinqUrl.objects.filter(id__in=data.get("archived_id_list")).update(archived=True)
 
     linq.refresh_from_db()
+
+    LinqsCache(linq.category.id).set_needs_caching()
 
     return SuccessJsonResponse({
         "linq": LinqLabelSerializer(linq).data,

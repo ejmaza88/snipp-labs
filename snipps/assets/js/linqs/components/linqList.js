@@ -6,7 +6,7 @@ import LinqItem from "./linqItem";
 
 const LinqList = observer( (props) => {
 
-  const { linqStore, updateLinqStore } = props.store
+  const { linqStore, updateLinqStore, categoryStore } = props.store
 
   const deleteLinqFunc = (index) => linqStore.deleteItem(index)
 
@@ -22,6 +22,7 @@ const LinqList = observer( (props) => {
               item={i}
               deleteLinqFunc={deleteLinqFunc}
               updateLinqStore={updateLinqStore}
+              categoryStore={categoryStore}
             />
           )
         })}

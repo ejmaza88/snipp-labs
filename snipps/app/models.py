@@ -41,6 +41,9 @@ class ArchiveModel(models.Model):
     """
 
     archived = models.BooleanField(default=False)
+    added = models.DateTimeField(null=True, blank=True)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    last_modified = models.DateTimeField(auto_now=True)
 
     # Manager objs
     objects = ArchiveModelVisibleManager()
@@ -59,10 +62,6 @@ class Category(ArchiveModel):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     name = models.CharField(max_length=50)
     new_item = models.BooleanField(default=True)
-    added = models.DateTimeField(null=True, blank=True)
-
-    timestamp = models.DateTimeField(auto_now_add=True)
-    last_modified = models.DateTimeField(auto_now=True)
 
     class Meta:
         verbose_name = 'Category'
@@ -81,10 +80,6 @@ class LinqLabel(ArchiveModel):
 
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     name = models.CharField(max_length=200)
-    added = models.DateTimeField(null=True, blank=True)
-
-    timestamp = models.DateTimeField(auto_now_add=True)
-    last_modified = models.DateTimeField(auto_now=True)
 
     class Meta:
         verbose_name = 'Linq Label'
@@ -103,9 +98,6 @@ class LinqUrl(ArchiveModel):
 
     label = models.ForeignKey(LinqLabel, on_delete=models.CASCADE)
     url = models.TextField()
-
-    timestamp = models.DateTimeField(auto_now_add=True)
-    last_modified = models.DateTimeField(auto_now=True)
 
     class Meta:
         verbose_name = 'Linq Url'

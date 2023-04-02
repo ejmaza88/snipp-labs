@@ -1,7 +1,15 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 
-from .models import User, Category, LinqLabel, LinqUrl
+from .models import (
+    User,
+    Category,
+    LinqLabel,
+    LinqUrl,
+    SnippetCategory,
+    SnippetLabel,
+    Snippet,
+)
 
 # Register your models here.
 
@@ -9,9 +17,10 @@ from .models import User, Category, LinqLabel, LinqUrl
 @admin.register(User)
 class CustomUserAdmin(UserAdmin):
     list_display = ['username', 'key', 'first_name', 'last_name']
-    fieldsets = (
+    readonly_fields = ("key",)
+    fieldsets = UserAdmin.fieldsets + (
         ('Unique Key', {'fields': ['key']}),
-    ) + UserAdmin.fieldsets
+    )
 
 
 class ArchivedModelAdmin(admin.ModelAdmin):
@@ -29,17 +38,35 @@ class ArchivedModelAdmin(admin.ModelAdmin):
 
 @admin.register(Category)
 class CategoryAdmin(ArchivedModelAdmin):
-    list_display = ('name', 'new_item')
+    list_display = ('name', 'new_item',)
     search_fields = ('name',)
 
 
 @admin.register(LinqLabel)
 class LinqLabelAdmin(ArchivedModelAdmin):
-    list_display = ('category', 'name')
-    search_fields = ('category', 'name')
+    list_display = ('category', 'name',)
+    search_fields = ('category', 'name',)
 
 
 @admin.register(LinqUrl)
 class LinqUrlAdmin(ArchivedModelAdmin):
-    list_display = ('label', 'url')
-    search_fields = ('label', 'url')
+    list_display = ('label', 'url',)
+    search_fields = ('label', 'url',)
+
+
+@admin.register(SnippetCategory)
+class SnippetCategoryAdmin(ArchivedModelAdmin):
+    list_display = ('name', 'new_item',)
+    search_fields = ('name',)
+
+
+@admin.register(SnippetLabel)
+class SnippetLabelAdmin(ArchivedModelAdmin):
+    list_display = ('category', 'name',)
+    search_fields = ('category', 'name',)
+
+
+@admin.register(Snippet)
+class SnippetAdmin(ArchivedModelAdmin):
+    list_display = ("id",)
+    search_fields = ("id",)

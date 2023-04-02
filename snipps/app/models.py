@@ -20,11 +20,11 @@ class ArchiveModelHiddenManager(models.Manager):
 # Custom User Model
 def _key_generator():
     """Return a unique key"""
-    return ''.join(secrets.choice(f'{string.ascii_letters}{string.digits}') for _ in range(20))
+    return ''.join(secrets.choice(f'{string.ascii_letters}{string.digits}') for _ in range(64))
 
 
 class User(AbstractUser):
-    key = models.CharField(max_length=20, db_index=True, default=_key_generator)
+    key = models.CharField(max_length=64, db_index=True, default=_key_generator, editable=False)
 
     def __str__(self):
         """Return a human-readable string representing a User record"""
@@ -107,3 +107,58 @@ class LinqUrl(ArchiveModel):
     def __str__(self):
         """Return a human-readable string representing a record"""
         return f'{self.label} - ({self.id})'
+
+
+class SnippetCategory(ArchiveModel):
+    """
+    SnippetCategory Record
+    """
+
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="snippet_categories")
+    name = models.CharField(max_length=50)
+    new_item = models.BooleanField(default=True)
+
+    class Meta:
+        verbose_name = 'Snippet Category'
+        verbose_name_plural = 'Snippet Categories'
+        ordering = ['name']
+
+    def __str__(self):
+        """Return a human-readable string representing a record"""
+        return f'{self.name} ({self.id})'
+
+
+class Snippet(ArchiveModel):
+    """
+    Snippet Record
+    """
+    value = models.TextField(null=True, blank=True)
+
+    class Meta:
+        verbose_name = 'Snippet'
+        verbose_name_plural = 'Snippets'
+        ordering = ['-timestamp']
+
+    def __str__(self):
+        """Return a human-readable string representing a record"""
+        return f'(Snippet - {self.id})'
+
+
+class SnippetLabel(ArchiveModel):
+    """
+    Snippet Label Record
+    """
+
+    category = models.ForeignKey(SnippetCategory, on_delete=models.CASCADE, related_name="labels")
+    snippet = models.OneToOneField(Snippet, on_delete=models.CASCADE)
+    name = models.CharField(max_length=200)
+
+    class Meta:
+        verbose_name = 'Snippet Label'
+        verbose_name_plural = 'Snippet Labels'
+        ordering = ['-timestamp']
+
+    def __str__(self):
+        """Return a human-readable string representing a record"""
+        return f'{self.category} - {self.name} ({self.id})'
+

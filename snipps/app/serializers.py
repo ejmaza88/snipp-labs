@@ -1,5 +1,11 @@
 from rest_framework import serializers
-from .models import Category, LinqLabel, LinqUrl
+from .models import (
+    Category,
+    LinqLabel,
+    LinqUrl,
+    SnippetCategory,
+    SnippetLabel,
+)
 
 
 class LinqUrlSerializer(serializers.ModelSerializer):
@@ -17,17 +23,22 @@ class LinqLabelSerializer(serializers.ModelSerializer):
         fields = ('id', 'category', 'name', 'timestamp', 'last_modified', 'urls', 'category_name')
 
 
-# not used anywhere ???
-class CategorySelectedSerializer(serializers.ModelSerializer):
-    labels = LinqLabelSerializer(source='linqlabel_set', many=True, read_only=True)
-
-    class Meta:
-        model = Category
-        fields = ('id', 'name', 'new_item', 'timestamp', 'labels')
-
-
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = '__all__'
         # fields = ('id', 'name', 'new_item', 'timestamp', 'last_modified')
+
+
+class SnippetLabelSerializer(serializers.ModelSerializer):
+    snippet_value = serializers.CharField(source="snippet.value", read_only=True)
+
+    class Meta:
+        model = SnippetLabel
+        fields = "__all__"
+
+
+class SnippetCategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SnippetCategory
+        fields = "__all__"

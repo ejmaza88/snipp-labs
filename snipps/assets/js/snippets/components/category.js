@@ -1,7 +1,7 @@
 import React from 'react';
 import Item from "../../shared/item";
 import { removeNewItemClass } from "../../helpers/helpers";
-import SnippsAPI from "../../helpers/network";
+// import SnippsAPI from "../../helpers/network";
 import { confirmation } from "../../helpers/helpers";
 // import { toJS } from "mobx";
 
@@ -9,7 +9,7 @@ import { confirmation } from "../../helpers/helpers";
 import 'react-confirm-alert/src/react-confirm-alert.css';
 
 
- const CategoryItem = (
+ const Category = (
   {
     item,
     active,
@@ -28,7 +28,7 @@ import 'react-confirm-alert/src/react-confirm-alert.css';
 
     // load the item for the selected category
     // from API call
-    SnippsAPI.categoryLinqs(params, (data) => loadLinqItemsCallback(data.categoryLinqs))
+    // SnippsAPI.categoryLinqs(params, (data) => loadLinqItemsCallback(data.categoryLinqs))
 
     makeCategoryActiveCallback(itemIndex, item.id)
   }
@@ -41,7 +41,8 @@ import 'react-confirm-alert/src/react-confirm-alert.css';
       `Are you sure you want to delete '${item.name}'`,
       () => {
         // delete category API call
-        SnippsAPI.categoryDelete(params, () => deleteCategoryCallback(itemIndex))
+        // SnippsAPI.categoryDelete(params, () => deleteCategoryCallback(itemIndex))
+        console.log("deleted")
       }
     )
   }
@@ -59,4 +60,4 @@ import 'react-confirm-alert/src/react-confirm-alert.css';
   )
 }
 
-export default CategoryItem
+export default Category

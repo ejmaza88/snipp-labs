@@ -9,7 +9,7 @@ const CategoryList = observer((props) => {
 
   const {categoryStore, linqStore} = props.store
 
-  const makeCategoryActiveFunc = (index, itemId) => {
+  const makeCategoryActiveCallback = (index, itemId) => {
     categoryStore.updateActiveItem(index)
     categoryStore.updateActiveItemId(itemId)
   }
@@ -32,11 +32,11 @@ const CategoryList = observer((props) => {
   }
 
   // const deleteCategory = (index) => categoryStore.deleteItem(index)
-  const deleteCategoryFunc = (index) => {
+  const deleteCategoryCallback = (index) => {
     categoryStore.deleteItem(index)
     loadDefaultAfterDelete()
   }
-  const loadLinqItemsFunc = (items) => linqStore.loadFromArray(items)
+  const loadLinqItemsCallback = (items) => linqStore.loadFromArray(items)
 
 
   // creates list of categories to be displayed
@@ -46,9 +46,9 @@ const CategoryList = observer((props) => {
       item={i}
       itemIndex={index}
       active={index === categoryStore.activeItem}
-      makeCategoryActiveFunc={makeCategoryActiveFunc}
-      deleteCategoryFunc={deleteCategoryFunc}
-      loadLinqItemsFunc={loadLinqItemsFunc}
+      makeCategoryActiveCallback={makeCategoryActiveCallback}
+      deleteCategoryCallback={deleteCategoryCallback}
+      loadLinqItemsCallback={loadLinqItemsCallback}
     />
   ))
 

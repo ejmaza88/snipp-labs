@@ -25,8 +25,8 @@ export const getCSRFtoken = () => Cookies.get(TOKEN)
   When a new category is added, a css class will be added to make it
   stand out, when the user clicks the category name remove the class
  */
-export const removeNewItemClass = (elmentId, className) => (
-  document.getElementById(elmentId).classList.remove(className)
+export const removeNewItemClass = (elementId) => (
+  document.getElementById(elementId).classList.remove("text-warning")
 )
 
 

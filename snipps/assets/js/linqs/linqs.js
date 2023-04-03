@@ -18,9 +18,7 @@ import '../../css/linqs.css'
 const store = new RootStore();
 
 
-function App(props) {
-
-  const { categories, initSelectedLinqs } = props
+function App({categories, initSelectedLinqs}) {
 
   useComponentWillMount(() => {
     // load categories to store

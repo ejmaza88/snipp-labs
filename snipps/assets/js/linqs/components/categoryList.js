@@ -2,6 +2,7 @@ import React from 'react';
 import {observer} from "mobx-react-lite";
 import CategoryItem from "./categoryItem";
 import SnippsAPI from "../../helpers/network"
+import NoItems from "../../shared/noItems";
 // import { toJS } from "mobx";
 
 
@@ -36,8 +37,8 @@ const CategoryList = observer((props) => {
     categoryStore.deleteItem(index)
     loadDefaultAfterDelete()
   }
-  const loadLinqItemsCallback = (items) => linqStore.loadFromArray(items)
 
+  const loadLinqItemsCallback = (items) => linqStore.loadFromArray(items)
 
   // creates list of categories to be displayed
   const categoryItems = categoryStore.items && categoryStore.items.map((i, index) => (
@@ -55,18 +56,11 @@ const CategoryList = observer((props) => {
   return (
     <>
       <div className='mb-3'>
-        {categoryStore.items.length > 0 ? categoryItems : <NoCategories/>}
+        {categoryStore.items.length > 0 ? categoryItems : <NoItems label={"No categories added"}/>}
       </div>
     </>
   )
 })
-
-
-const NoCategories = () => {
-  // Default to display if no categories exist
-  return <div className='small'>No categories added</div>
-}
-
 
 export {
   CategoryList

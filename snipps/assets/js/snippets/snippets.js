@@ -10,6 +10,7 @@ import {
 import SnippetCategories from "./components/categories";
 import SnippetLabels from "./components/labels";
 import SnippetEditor from "./components/editor";
+import AddSnippetCategory from "./components/addCategory";
 
 
 import '../../css/snippets.css'
@@ -21,15 +22,17 @@ const store = new RootStore();
 
 function App({categories, initSelectedSnippets}) {
 
+  const {categoryStore, snippetStore} = store
+
   useComponentWillMount(() => {
     // load stores
-    store.categoryStore.loadFromObj(categories)
-    store.snippetStore.loadFromObj(initSelectedSnippets)
-    store.snippetStore.loadCodeSnippet(initSelectedSnippets[0])
+    categoryStore.loadFromObj(categories)
+    snippetStore.loadFromObj(initSelectedSnippets)
+    snippetStore.loadCodeSnippet(initSelectedSnippets[0])
 
     // update the 'active' items if array is Not empty
-    if (categories.length > 0) store.categoryStore.updateActiveItemId(categories[0].id)
-    if (initSelectedSnippets.length > 0) store.snippetStore.updateActiveItemId(initSelectedSnippets[0].id)
+    if (categories.length > 0) categoryStore.updateActiveItemId(categories[0].id)
+    if (initSelectedSnippets.length > 0) snippetStore.updateActiveItemId(initSelectedSnippets[0].id)
   })
 
   return (
@@ -37,6 +40,7 @@ function App({categories, initSelectedSnippets}) {
       <FadeIn>
         <MDBRow>
           <MDBCol sm={12} md={2} lg={2}>
+            <AddSnippetCategory store={store}/>
             <SnippetCategories store={store}/>
           </MDBCol>
 

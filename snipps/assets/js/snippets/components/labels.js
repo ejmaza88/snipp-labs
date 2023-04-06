@@ -6,6 +6,7 @@ import {
   MDBInputGroup,
 } from "mdb-react-ui-kit";
 import Label from "./label";
+import NoItems from "../../shared/noItems";
 
 
 const SnippetLabels = observer(({store}) => {
@@ -42,7 +43,7 @@ const SnippetLabels = observer(({store}) => {
         </MDBInputGroup>
       </div>
       <div className="pt-2">
-        {labels}
+        {snippetStore.items.length > 0 ? labels : <NoItems label={"No Snippets Added"}/>}
       </div>
     </>
   )

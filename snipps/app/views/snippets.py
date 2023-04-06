@@ -1,6 +1,8 @@
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
 from django.shortcuts import render
 from rest_framework.decorators import api_view
+from rest_framework import status
 
 from app.models import SnippetCategory, SnippetLabel
 from app.serializers import SnippetCategorySerializer, SnippetLabelSerializer
@@ -26,6 +28,68 @@ def snippets(request):
         })
 
     return render(request, 'app/snippets.html', context)
+
+
+# API VIEWS
+@login_required
+@api_view(['POST'])
+def add_snippet_category(request):
+    """
+    Add a new category
+    """
+
+    category_count = SnippetCategory.objects.count()
+    data = {'user': request.user.id, **request.data}
+
+    # only when creating a category for the firs time
+    if category_count == 0:
+        data.update({'new_item': False})
+
+    category_serializer = SnippetCategorySerializer(data=data)
+
+    if category_serializer.is_valid():
+        category_serializer.save()
+        context = {'obj': category_serializer.data, 'status': status.HTTP_201_CREATED}
+        return SuccessJsonResponse(context)
+
+    context = {'obj': category_serializer.errors, 'status': status.HTTP_400_BAD_REQUEST}
+    return JsonResponse(context)
+
+
+@login_required
+@api_view(['POST'])
+def archive_snippet_category(request):
+    """
+    Archives a category
+    """
+
+    data = request.data
+    SnippetCategory.objects.filter(pk=data.get('category_id')).update(archived=True)
+
+    return SuccessJsonResponse()
+
+
+@login_required
+@api_view(['GET'])
+def category_snippets(request):
+    """
+    Return all category Snippets/Labels when the category name is clicked
+    """
+
+    # print(flush=True)
+
+    data = request.GET
+    category_id = data.get('category_id')
+    is_new = data.get('is_new')  # has the category name been clicked yet?
+
+    snippets_list = SnippetLabel.objects.filter(category_id=category_id).select_related('category').prefetch_related('snippet')
+
+    if is_new == 'true':
+        SnippetCategory.objects.filter(pk=category_id).update(new_item=False)
+
+    return SuccessJsonResponse({
+        'categoryLabels': SnippetLabelSerializer(instance=snippets_list, many=True).data,
+    })
 
 
 # API VIEWS

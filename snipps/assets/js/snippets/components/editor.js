@@ -8,7 +8,7 @@ import SnippsAPI from "../../helpers/network";
 import "ace-builds/src-noconflict/mode-python";
 import "ace-builds/src-noconflict/mode-javascript";
 import "ace-builds/src-noconflict/theme-github";
-import "ace-builds/src-noconflict/theme-cobalt";
+import "ace-builds/src-noconflict/theme-tomorrow";
 import "ace-builds/src-noconflict/ext-language_tools";
 
 
@@ -17,6 +17,7 @@ const SnippetEditor = observer(({store}) => {
   const {snippetStore} = store
 
   const [editorValue, setEditorValue] = useState(null)
+  const [editorMode, setEditorMode] = useState("text")
 
   useEffect(() => {
     setEditorValue(snippetStore?.snippet && JSON.parse(snippetStore?.snippet?.snippet_value))
@@ -36,17 +37,24 @@ const SnippetEditor = observer(({store}) => {
     })
   }
 
+  const handleChangeEditorMode = (e) => {
+    setEditorMode(e.target.value)
+  }
+
   return (
     <>
       <MDBRow>
         <MDBCol>
           <div className={"pb-2"}>
-            <select className="select">
-              <option value="1">Text</option>
-              <option value="2">Python</option>
-              <option value="3">JavaScript</option>
+            <select className="select" onChange={handleChangeEditorMode} defaultValue={editorMode}>
+              <option value="text">Text</option>
+              <option value="python">Python</option>
+              <option value="javascript">JavaScript</option>
             </select>
           </div>
+        </MDBCol>
+        <MDBCol className={"text-center"}>
+          {snippetStore?.snippet?.name}
         </MDBCol>
         <MDBCol className={"text-end"}>
           <MDBBtn size='sm' color='primary' onClick={handleClick}>Save</MDBBtn>
@@ -54,8 +62,8 @@ const SnippetEditor = observer(({store}) => {
       </MDBRow>
 
       <AceEditor
-        mode="python"
-        theme="github"
+        mode={editorMode}
+        theme="tomorrow"
         name="UNIQUE_ID_OF_DIV"
         editorProps={{$blockScrolling: true}}
         width={"100%"}
@@ -63,6 +71,7 @@ const SnippetEditor = observer(({store}) => {
         onChange={onChange}
         // onBlur={handleBlur}
         value={editorValue}
+        setOptions={{useWorker: false}}  // https://github.com/ajaxorg/ace/issues/4060#issuecomment-1217133879
       />
     </>
   )

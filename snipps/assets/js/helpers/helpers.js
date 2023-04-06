@@ -74,3 +74,13 @@ export const confirmation = (message, onOk, onCancel) => {
     })
   )
 }
+
+
+// get item index and insert in the array
+export const getItemIndex = (itemName, itemsArray) => {
+  const items = itemsArray
+  items.push(itemName)
+
+  // sort the list, ignore case (upper, lower) and find index of new item
+  return items.sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase())).indexOf(itemName)
+}

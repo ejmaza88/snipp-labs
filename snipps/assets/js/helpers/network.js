@@ -121,8 +121,20 @@ const linqSearch = (params, callback) => {
 *   SNIPPETS NETWORK API
 *
 * */
+const snippetCategoryAdd = (data, callback) => {
+  POST('/api/snippets/add_category', data, callback)
+}
+
 const saveUpdateSnippet = (data, callback) => {
   POST('/api/snippets/save-update', data, callback)
+}
+
+const snippetCategoryDelete = (data, callback) => {
+  POST('/api/snippets/delete_category', data, callback)
+}
+
+const categorySnippets = (params, callback) => {
+  GET('/api/snippets/get_category_snippets', params, callback)
 }
 
 
@@ -134,5 +146,8 @@ export default {
   linqDelete,
   linqUpdate,
   linqSearch,
-  saveUpdateSnippet
+  snippetCategoryAdd,
+  saveUpdateSnippet,
+  snippetCategoryDelete,
+  categorySnippets,
 }

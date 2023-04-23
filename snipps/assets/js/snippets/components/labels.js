@@ -1,49 +1,35 @@
 import React from "react";
 import {observer} from "mobx-react-lite";
-// import { toJS } from "mobx";
-import {
-  MDBBtn,
-  MDBInputGroup,
-} from "mdb-react-ui-kit";
 import Label from "./label";
 import NoItems from "../../shared/noItems";
+import {removeNewItemClass} from "../../helpers/helpers";
+// import {toJS} from "mobx";
 
 
-const SnippetLabels = observer(({store}) => {
+const SnippetLabels = observer((
+  {
+    store: {snippetStore}
+  }) => {
 
-  const {snippetStore} = store
-
-  const makeCategoryActiveCallback = (index, itemId) => {
-    snippetStore.updateActiveItem(index)
-    snippetStore.updateActiveItemId(itemId)
-  }
-
-  const loadCodeSnippet = (labelObject) => snippetStore.loadCodeSnippet(labelObject)
-
+  const handleOnClickCallback = (labelIndex, labelObject) => snippetStore.handleLabelClick(labelIndex, labelObject)
+  const handleOnDeleteCallback = (labelIndex) => snippetStore.handleLabelDelete(labelIndex)
 
   // creates list of labels to be displayed
   const labels = snippetStore.items && snippetStore.items.map((i, index) => (
     <Label
       key={i.id}
-      item={i}
-      itemIndex={index}
-      active={index === snippetStore.activeItem}
-      makeCategoryActiveCallback={makeCategoryActiveCallback}
-      deleteCategoryCallback={() => null}
-      loadCodeSnippet={loadCodeSnippet}
+      labelObject={i}
+      labelIndex={index}
+      is_active={index === snippetStore.activeLabelIndex}
+      handleOnClickCallback={handleOnClickCallback}
+      handleOnDeleteCallback={handleOnDeleteCallback}
     />
   ))
 
   return (
     <>
-      <div>
-        <MDBInputGroup size={"sm"}>
-          <input className='form-control' type='text'/>
-          <MDBBtn onClick={() => console.log("Super!!!!!")}><i className="fas fa-plus"/></MDBBtn>
-        </MDBInputGroup>
-      </div>
       <div className="pt-2">
-        {snippetStore.items.length > 0 ? labels : <NoItems label={"No Snippets Added"}/>}
+        {snippetStore.items.length > 0 ? labels : <NoItems label={"No Snippets"}/>}
       </div>
     </>
   )

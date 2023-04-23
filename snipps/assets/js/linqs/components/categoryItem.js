@@ -20,7 +20,7 @@ import 'react-confirm-alert/src/react-confirm-alert.css';
   }) => {
 
   // add a new category
-  const activeCategory = () => {
+  const handleOnClick = () => {
     // history.replaceState(null, '', `?sltd=${item.id}`)  // add query string to url
 
     if (item.new_item) removeNewItemClass(`category_${itemIndex}`)
@@ -34,7 +34,7 @@ import 'react-confirm-alert/src/react-confirm-alert.css';
   }
 
   // delete an existing category
-  const deleteCategory = () => {
+  const handleOnDelete = () => {
     const params = {'category_id': item.id}
 
     confirmation(
@@ -51,9 +51,9 @@ import 'react-confirm-alert/src/react-confirm-alert.css';
       <Item
         itemIndex={itemIndex}
         item={item}
-        active={active}
-        activeCategory={activeCategory}
-        deleteCategory={deleteCategory}
+        is_active={active}
+        handleOnClick={handleOnClick}
+        handleOnDelete={handleOnDelete}
       />
     </>
   )

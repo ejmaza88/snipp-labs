@@ -20,8 +20,8 @@ const Category = (
     loadSnippetItemsCallback
   }) => {
 
-  // add a new category
-  const activeCategory = () => {
+  // on-click on a category
+  const handleOnClick = () => {
     if (item.new_item) removeNewItemClass(`category_${itemIndex}`)
     const params = {'category_id': item.id, 'is_new': item.new_item}
 
@@ -33,7 +33,7 @@ const Category = (
   }
 
   // delete an existing category
-  const deleteCategory = () => {
+  const handleOnDelete = () => {
     confirmation(
       `Are you sure you want to delete '${item.name}'`,
       () => {
@@ -48,9 +48,9 @@ const Category = (
       <Item
         itemIndex={itemIndex}
         item={item}
-        active={active}
-        activeCategory={activeCategory}
-        deleteCategory={deleteCategory}
+        is_active={active}
+        handleOnClick={handleOnClick}
+        handleOnDelete={handleOnDelete}
       />
     </>
   )

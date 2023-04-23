@@ -133,6 +133,7 @@ class Snippet(ArchiveModel):
     Snippet Record
     """
     value = models.TextField(null=True, blank=True)
+    type = models.CharField(max_length=120, default="text")
 
     class Meta:
         verbose_name = 'Snippet'

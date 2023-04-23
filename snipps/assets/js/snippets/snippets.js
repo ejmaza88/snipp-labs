@@ -11,6 +11,7 @@ import SnippetCategories from "./components/categories";
 import SnippetLabels from "./components/labels";
 import SnippetEditor from "./components/editor";
 import AddSnippetCategory from "./components/addCategory";
+import AddSnippetLabel from "./components/addLabel";
 
 
 import '../../css/snippets.css'
@@ -28,7 +29,7 @@ function App({categories, initSelectedSnippets}) {
     // load stores
     categoryStore.loadFromObj(categories)
     snippetStore.loadFromObj(initSelectedSnippets)
-    snippetStore.loadCodeSnippet(initSelectedSnippets[0])
+    snippetStore.loadSelectedLabelObject(initSelectedSnippets[0])
 
     // update the 'active' items if array is Not empty
     if (categories.length > 0) categoryStore.updateActiveItemId(categories[0].id)
@@ -45,6 +46,7 @@ function App({categories, initSelectedSnippets}) {
           </MDBCol>
 
           <MDBCol sm={12} md={2} lg={2}>
+            <AddSnippetLabel store={store}/>
             <SnippetLabels store={store}/>
           </MDBCol>
 

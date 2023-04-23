@@ -1,7 +1,7 @@
 import React from 'react';
 import Item from "../../shared/item";
 import { removeNewItemClass } from "../../helpers/helpers";
-// import SnippsAPI from "../../helpers/network";
+import SnippsAPI from "../../helpers/network";
 import { confirmation } from "../../helpers/helpers";
 // import { toJS } from "mobx";
 
@@ -11,43 +11,36 @@ import 'react-confirm-alert/src/react-confirm-alert.css';
 
  const Label = (
   {
-    item,
-    active,
-    itemIndex,
-    makeCategoryActiveCallback,
-    deleteCategoryCallback,
-    loadCodeSnippet,
+    labelObject,
+    is_active,
+    labelIndex,
+    handleOnClickCallback,
+    handleOnDeleteCallback,
   }) => {
 
-  // add a new category
-  const activeCategory = () => {
-    if (item.new_item) removeNewItemClass(`category_${itemIndex}`)
-    makeCategoryActiveCallback(itemIndex, item.id)
-    loadCodeSnippet(item)
+  const handleOnClick = () => {
+    if (labelObject.new_item) removeNewItemClass(`category_${labelIndex}`)
+    handleOnClickCallback(labelIndex, labelObject)
   }
 
-  // delete an existing category
-  const deleteCategory = () => {
-    const params = {'category_id': item.id}
-
+  // delete an existing label
+  const handleOnDelete = () => {
     confirmation(
-      `Are you sure you want to delete '${item.name}'`,
-      () => {
-        // delete category API call
-        // SnippsAPI.categoryDelete(params, () => deleteCategoryCallback(itemIndex))
-        console.log("deleted")
-      }
+      `Are you sure you want to delete '${labelObject.name}'`,
+
+      // delete label API call
+      () => SnippsAPI.snippetLabelDelete({'label_id': labelObject.id}, () => handleOnDeleteCallback(labelIndex))
     )
   }
 
   return (
     <>
       <Item
-        itemIndex={itemIndex}
-        item={item}
-        active={active}
-        activeCategory={activeCategory}
-        deleteCategory={deleteCategory}
+        itemIndex={labelIndex}
+        item={labelObject}
+        is_active={is_active}
+        handleOnClick={handleOnClick}
+        handleOnDelete={handleOnDelete}
       />
     </>
   )

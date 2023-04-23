@@ -3,11 +3,11 @@ import React from "react";
 
 const Item = (
   {
-    itemIndex,
     item,
-    active,
-    activeCategory,
-    deleteCategory
+    itemIndex,
+    is_active,
+    handleOnClick,
+    handleOnDelete,
   }) => {
 
   return (
@@ -16,8 +16,8 @@ const Item = (
         <div className='col-10'>
           <span
             id={`category_${itemIndex}`}
-            className={`item ${active ? 'text-primary' : ''} ${item?.new_item ? "text-warning" : ''}`}  // fw-bold
-            onClick={activeCategory}
+            className={`item ${is_active ? 'text-primary' : ''} ${item?.new_item ? "text-warning" : ''}`}  // fw-bold
+            onClick={handleOnClick}
           >
             <div className='small'>{item.name}</div>
           </span>
@@ -25,7 +25,7 @@ const Item = (
 
         <div className='col-2 text-end'>
           {/*<small><i className="far fa-trash-alt del-item" onClick={delCategory} /></small>*/}
-          <div className='small'><i className="far fa-trash-alt del-item" onClick={deleteCategory}/></div>
+          <div className='small'><i className="far fa-trash-alt del-item" onClick={handleOnDelete}/></div>
         </div>
       </div>
     </>

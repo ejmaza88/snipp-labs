@@ -32,6 +32,7 @@ class CategorySerializer(serializers.ModelSerializer):
 
 class SnippetLabelSerializer(serializers.ModelSerializer):
     snippet_value = serializers.CharField(source="snippet.value", read_only=True)
+    snippet_type = serializers.CharField(source="snippet.type", read_only=True)
 
     class Meta:
         model = SnippetLabel

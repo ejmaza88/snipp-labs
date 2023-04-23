@@ -4,7 +4,7 @@ from django.shortcuts import render
 from rest_framework.decorators import api_view
 from rest_framework import status
 
-from app.models import SnippetCategory, SnippetLabel
+from app.models import SnippetCategory, SnippetLabel, Snippet
 from app.serializers import SnippetCategorySerializer, SnippetLabelSerializer
 from app.utils import SuccessJsonResponse
 
@@ -92,13 +92,60 @@ def category_snippets(request):
     })
 
 
-# API VIEWS
 @login_required
 @api_view(['POST'])
-def save_update_snippet(request):
+def add_snippet_label(request):
     """
     Add a new category
     """
 
-    context = {"codeSnippet": request.data["snippet_value"]}
-    return SuccessJsonResponse(context)
+    snippet = Snippet.objects.create(value='"Add snippet here"')
+
+    data = {
+        'user': request.user.id,
+        "name": request.data.get("name"),
+        "category": int(request.data.get("category_id")),
+        "snippet": snippet.id
+    }
+
+    category_serializer = SnippetLabelSerializer(data=data)
+
+    if category_serializer.is_valid():
+        category_serializer.save()
+        context = {'obj': category_serializer.data, 'status': status.HTTP_201_CREATED}
+        return SuccessJsonResponse(context)
+
+    context = {'obj': category_serializer.errors, 'status': status.HTTP_400_BAD_REQUEST}
+    return JsonResponse(context)
+
+
+@login_required
+@api_view(['POST'])
+def archive_label(request):
+    """
+    Archive a new LinQ
+    """
+
+    data = request.data
+    SnippetLabel.objects.filter(pk=data.get('label_id')).update(archived=True)
+
+    return SuccessJsonResponse()
+
+
+# API VIEWS
+@login_required
+@api_view(['POST'])
+def update_snippet(request):
+    """
+    Update Snippet
+
+    Will update the snippet code or the code type, but no both at the same time
+    """
+
+    snippet_id = request.data.get("snippet_id")
+    snippet_value = request.data.get("snippet_value")
+    snippet_type = request.data.get("snippet_type")
+
+    Snippet.objects.filter(pk=snippet_id).update(value=snippet_value, type=snippet_type)
+
+    return SuccessJsonResponse()

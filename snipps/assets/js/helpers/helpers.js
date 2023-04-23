@@ -31,7 +31,7 @@ export const removeNewItemClass = (elementId) => (
 
 
 // Confirmation
-export const confirmation = (message, onOk, onCancel) => {
+export const confirmation = (message, onOkCallback, onCancel) => {
 
   return (
     confirmAlert({
@@ -41,7 +41,7 @@ export const confirmation = (message, onOk, onCancel) => {
         {
           label: 'Delete',
           onClick: () => {
-            onOk()
+            onOkCallback()
           },
           className: 'btn btn-success'
         },

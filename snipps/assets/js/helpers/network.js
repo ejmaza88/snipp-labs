@@ -143,7 +143,7 @@ const snippetLabelAdd = (params, callback) => {
 }
 
 const snippetLabelDelete = (data, callback) => {
-  POST('/api/snippets/delete_label', data, callback)
+  PUT('/api/snippets/delete_label', data, callback)
 }
 
 

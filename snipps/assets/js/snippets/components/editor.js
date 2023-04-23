@@ -84,7 +84,7 @@ const SnippetEditor = observer((
 
   return (
     <>
-      {snippetStore.items.length > 0 ?
+      {snippetStore.labels.length > 0 ?
         <>
           <EditorHeader
             handleChangeEditorMode={handleChangeEditorMode}

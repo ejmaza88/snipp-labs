@@ -120,7 +120,7 @@ def add_snippet_label(request):
 
 
 @login_required
-@api_view(['POST'])
+@api_view(['PUT'])
 def archive_label(request):
     """
     Archive a new LinQ

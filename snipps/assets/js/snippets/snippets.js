@@ -3,15 +3,15 @@ import ReactDOM from 'react-dom';
 import FadeIn from 'react-fade-in';
 import RootStore from "../store/snippets/rootStore";
 import {useComponentWillMount} from "../helpers/helpers";
-import {
-  MDBCol,
-  MDBRow,
-} from 'mdb-react-ui-kit';
 import SnippetCategories from "./components/categories";
 import SnippetLabels from "./components/labels";
 import SnippetEditor from "./components/editor";
 import AddSnippetCategory from "./components/addCategory";
 import AddSnippetLabel from "./components/addLabel";
+import {
+  MDBCol,
+  MDBRow,
+} from 'mdb-react-ui-kit';
 
 
 import '../../css/snippets.css'
@@ -21,19 +21,22 @@ const store = new RootStore();
 
 
 
-function App({categories, initSelectedSnippets}) {
+function App(
+  {
+    categories,
+    initSelectedSnippets,
+  }) {
 
   const {categoryStore, snippetStore} = store
 
   useComponentWillMount(() => {
     // load stores
     categoryStore.loadFromObj(categories)
-    snippetStore.loadFromObj(initSelectedSnippets)
-    snippetStore.loadSelectedLabelObject(initSelectedSnippets[0])
+    snippetStore.loadLabelsAndSelectedObject(initSelectedSnippets)
 
     // update the 'active' items if array is Not empty
     if (categories.length > 0) categoryStore.updateActiveItemId(categories[0].id)
-    if (initSelectedSnippets.length > 0) snippetStore.updateActiveItemId(initSelectedSnippets[0].id)
+    if (initSelectedSnippets.length > 0) snippetStore.updateActiveLabelId(initSelectedSnippets[0].id)
   })
 
   return (

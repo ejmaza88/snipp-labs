@@ -6,7 +6,6 @@ import {confirmation} from "../../helpers/helpers";
 // import { toJS } from "mobx";
 
 
-
 import 'react-confirm-alert/src/react-confirm-alert.css';
 
 
@@ -23,10 +22,10 @@ const Category = (
   // on-click on a category
   const handleOnClick = () => {
     if (item.new_item) removeNewItemClass(`category_${itemIndex}`)
+
     const params = {'category_id': item.id, 'is_new': item.new_item}
 
-    // load the item for the selected category
-    // from API call
+    // load the item for the selected category from API call
     SnippsAPI.categorySnippets(params, (data) => loadSnippetItemsCallback(data.categoryLabels))
 
     makeCategoryActiveCallback(itemIndex, item.id)

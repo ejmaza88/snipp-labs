@@ -13,8 +13,11 @@ const SnippetCategories = observer(({store}) => {
     categoryStore.updateActiveItem(index)
     categoryStore.updateActiveItemId(itemId)
 
-    snippetStore.items.length > 0 ? snippetStore.updateActiveItemId(snippetStore.items[0].id) : null
-    snippetStore.items.length > 0 ? snippetStore.updateActiveItem(0) : null
+    // this logic makes label object at index 0 in snippetStore.labels active if labels exist
+    if (snippetStore.labels.length > 0) {
+      snippetStore.updateActiveLabelId(snippetStore.labels[0].id)
+      snippetStore.updateActiveLabel(0)
+    }
   }
 
   const loadDefaultAfterDelete = () => {
@@ -22,10 +25,8 @@ const SnippetCategories = observer(({store}) => {
 
     // if deleting the category that is selected, get the items from that is a index 0
     if (categoryStore.activeItemId !== defaultCategory.id) {
-      const params = {
-        'category_id': defaultCategory.id,
-        'is_new': defaultCategory.new_item,
-      }
+      const params = {'category_id': defaultCategory.id, 'is_new': defaultCategory.new_item}
+
       SnippsAPI.categorySnippets(params, (data) => {
         loadSnippetItemsCallback(data.categoryLabels)
         makeCategoryActiveCallback(0, defaultCategory.id)
@@ -38,10 +39,7 @@ const SnippetCategories = observer(({store}) => {
     loadDefaultAfterDelete()
   }
 
-  const loadSnippetItemsCallback = (items) => {
-    snippetStore.loadFromObj(items)
-    snippetStore.loadSelectedLabelObject(items[0] || {})
-  }
+  const loadSnippetItemsCallback = (items) => snippetStore.loadLabelsAndSelectedObject(items)
 
   // creates list of categories to be displayed
   const categoryItems = categoryStore.items && categoryStore.items.map((i, index) => (

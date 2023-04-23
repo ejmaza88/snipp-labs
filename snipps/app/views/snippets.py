@@ -134,7 +134,7 @@ def archive_label(request):
 
 # API VIEWS
 @login_required
-@api_view(['POST'])
+@api_view(['PUT'])
 def update_snippet(request):
     """
     Update Snippet

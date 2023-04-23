@@ -127,7 +127,7 @@ const snippetCategoryAdd = (data, callback) => {
 }
 
 const updateSnippet = (data, callback) => {
-  POST('/api/snippets/update_snippet', data, callback)
+  PUT('/api/snippets/update_snippet', data, callback)
 }
 
 const snippetCategoryDelete = (data, callback) => {

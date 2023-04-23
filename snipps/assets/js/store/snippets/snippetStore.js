@@ -20,7 +20,7 @@ export default class SnippetStore {
       selectedLabel: observable,
 
       // actions
-      loadFromObj: action,
+      loadLabelsArray: action,
       newItem: action,
       updateActiveLabel: action,
       updateActiveLabelId: action,
@@ -67,7 +67,7 @@ export default class SnippetStore {
   }
 
   loadLabelsAndSelectedObject = (allLabelObjects) => {
-    this.loadFromObj(allLabelObjects)
+    this.loadLabelsArray(allLabelObjects)
     this.loadSelectedLabelObject(allLabelObjects[0] || {})
   }
 
@@ -84,5 +84,5 @@ export default class SnippetStore {
 
   // loads the labels store from the server
   // an array for objects [{...}, {...}, {...}]
-  loadFromObj = (allLabelObjects) => this.labels = allLabelObjects
+  loadLabelsArray = (allLabelObjects) => this.labels = allLabelObjects
 }

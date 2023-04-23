@@ -11,43 +11,43 @@ import 'react-confirm-alert/src/react-confirm-alert.css';
 
 const Category = (
   {
-    item,
-    active,
-    itemIndex,
-    makeCategoryActiveCallback,
-    deleteCategoryCallback,
-    loadSnippetItemsCallback
+    category,
+    is_active,
+    categoryIndex,
+    handleOnCategoryClickCallback,
+    handleOnCategoryDeleteCallback,
+    handleLoadCategoryLabelsCallback
   }) => {
 
   // on-click on a category
   const handleOnClick = () => {
-    if (item.new_item) removeNewItemClass(`category_${itemIndex}`)
+    if (category.new_item) removeNewItemClass(`category_${categoryIndex}`)
 
-    const params = {'category_id': item.id, 'is_new': item.new_item}
+    const params = {'category_id': category.id, 'is_new': category.new_item}
 
     // load the item for the selected category from API call
-    SnippsAPI.categorySnippets(params, (data) => loadSnippetItemsCallback(data.categoryLabels))
-
-    makeCategoryActiveCallback(itemIndex, item.id)
+    SnippsAPI.categorySnippets(params, (data) => {
+      handleLoadCategoryLabelsCallback(data.categoryLabels)
+      handleOnCategoryClickCallback(categoryIndex, category.id)
+    })
   }
 
   // delete an existing category
   const handleOnDelete = () => {
     confirmation(
-      `Are you sure you want to delete '${item.name}'`,
-      () => {
-        // delete category API call
-        SnippsAPI.snippetCategoryDelete({'category_id': item.id}, () => deleteCategoryCallback(itemIndex))
-      }
+      `Are you sure you want to delete '${category.name}'`,
+
+      // delete category API call
+      () => SnippsAPI.snippetCategoryDelete({'category_id': category.id}, () => handleOnCategoryDeleteCallback(categoryIndex)),
     )
   }
 
   return (
     <>
       <Item
-        itemIndex={itemIndex}
-        item={item}
-        is_active={active}
+        itemIndex={categoryIndex}
+        item={category}
+        is_active={is_active}
         handleOnClick={handleOnClick}
         handleOnDelete={handleOnDelete}
       />

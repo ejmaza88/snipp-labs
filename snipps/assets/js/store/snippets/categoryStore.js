@@ -6,37 +6,37 @@ import {
 
 
 export default class CategoryStore {
-  items = []
-  activeItem = 0
-  activeItemId = -1
+  categories = []
+  activeCategory = 0
+  activeCategoryId = -1
 
   constructor() {
     makeObservable(this, {
       // observables
-      items: observable,
-      activeItem: observable,
-      activeItemId: observable,
+      categories: observable,
+      activeCategory: observable,
+      activeCategoryId: observable,
 
       // actions
-      loadFromObj: action,
-      newItem: action,
-      updateActiveItem: action,
-      updateActiveItemId: action,
-      deleteItem: action,
+      loadCategoriesArray: action,
+      newSnippetCategory: action,
+      updateActiveSnippetCategory: action,
+      updateActiveSnippetCategoryId: action,
+      removeCategoryByIndex: action,
     })
   }
 
-  updateActiveItem = (itemIndex) => {
-    const {new_item, ...others} = this.items[itemIndex]
-    if (new_item) this.items.splice(itemIndex, 1, {new_item: false, ...others})  // remove css
-    this.activeItem = itemIndex // update active (selected category)
+  updateActiveSnippetCategory = (snippetCategoryIndex) => {
+    const {new_item, ...others} = this.categories[snippetCategoryIndex]
+    if (new_item) this.categories.splice(snippetCategoryIndex, 1, {new_item: false, ...others})  // remove css
+    this.activeCategory = snippetCategoryIndex // update active (selected category)
   }
 
-  loadFromObj = (data) => this.items = data
+  loadCategoriesArray = allCategories => this.categories = allCategories
 
-  newItem = (index, item) => this.items.splice(index, 0, item)
+  newSnippetCategory = (index, item) => this.categories.splice(index, 0, item)
 
-  updateActiveItemId = (itemId) => this.activeItemId = itemId
+  updateActiveSnippetCategoryId = snippetCategoryId => this.activeCategoryId = snippetCategoryId
 
-  deleteItem = (itemIndex) => this.items.splice(itemIndex, 1)
+  removeCategoryByIndex = snippetCategoryIndex => this.categories.splice(snippetCategoryIndex, 1)
 }

@@ -147,7 +147,7 @@ const EditorHeader = (
             </select>
           </div>
         </MDBCol>
-        <MDBCol className={"text-center"}>
+        <MDBCol className={"text-center fw-bold"}>
           {snippetName}
         </MDBCol>
         <MDBCol className={"text-end"}>

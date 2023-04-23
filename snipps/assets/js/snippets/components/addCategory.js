@@ -17,10 +17,10 @@ const AddSnippetCategory = (
     e.preventDefault()
 
     const name = e.target.snippet_category_name.value
-    const categoryIndex = getItemIndex(name, categoryStore.items.map(i => i.name))
+    const categoryIndex = getItemIndex(name, categoryStore.categories.map(i => i.name))
 
     SnippsAPI.snippetCategoryAdd({name: name}, (data) => {
-      categoryStore.newItem(categoryIndex, data.obj)
+      categoryStore.newSnippetCategory(categoryIndex, data.obj)
       e.target.snippet_category_name.value = ""
     })
   }

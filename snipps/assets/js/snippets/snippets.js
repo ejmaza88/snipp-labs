@@ -31,11 +31,11 @@ function App(
 
   useComponentWillMount(() => {
     // load stores
-    categoryStore.loadFromObj(categories)
+    categoryStore.loadCategoriesArray(categories)
     snippetStore.loadLabelsAndSelectedObject(initSelectedSnippets)
 
-    // update the 'active' items if array is Not empty
-    if (categories.length > 0) categoryStore.updateActiveItemId(categories[0].id)
+    // update the 'active' Category and Label if arrays are NOT empty
+    if (categories.length > 0) categoryStore.updateActiveSnippetCategoryId(categories[0].id)
     if (initSelectedSnippets.length > 0) snippetStore.updateActiveLabelId(initSelectedSnippets[0].id)
   })
 

@@ -16,7 +16,7 @@ const AddSnippetLabel = (
 
     const name = e.target.snippet_label_name.value
 
-    const requestData = {name: name, category_id: categoryStore.activeItemId}
+    const requestData = {name: name, category_id: categoryStore.activeCategoryId}
 
     SnippsAPI.snippetLabelAdd(requestData, (data) => {
       snippetStore.handleNewLabelFromServer(data.obj)

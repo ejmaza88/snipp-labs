@@ -3,6 +3,7 @@ import {observer} from "mobx-react-lite";
 import Category from "./category";
 import NoItems from "../../shared/noItems";
 import SnippsAPI from "../../helpers/network";
+import {toJS} from "mobx";
 
 
 const SnippetCategories = observer((
@@ -11,21 +12,19 @@ const SnippetCategories = observer((
   }) => {
 
   const handleOnCategoryClickCallback = (categoryIndex, categoryId) => {
-    categoryStore.updateActiveSnippetCategory(categoryIndex)
-    categoryStore.updateActiveSnippetCategoryId(categoryId)
+    categoryStore.handleCategoryClick(categoryIndex, categoryId)
 
-    // this logic makes label object at index 0 in snippetStore.labels active if labels exist
+    // this logic makes Label object at index 0 in snippetStore.labels active if labels exist
     if (snippetStore.labels.length > 0) {
       snippetStore.updateActiveLabelId(snippetStore.labels[0].id)
       snippetStore.updateActiveLabel(0)
     }
   }
 
-  const loadDefaultAfterDelete = () => {
-    const defaultCategory = categoryStore.categories[0]
-
-    // if deleting the category that is selected, get the items from index 0
-    if (categoryStore.activeCategoryId !== defaultCategory.id) {
+  const loadDefaultSnippetCategoryAfterDelete = () => {
+    // if deleting the Category that is selected, get the Labels from Category at index 0
+    if (categoryStore.activeCategoryId !== categoryStore.selectedCategory.id) {
+      const defaultCategory = categoryStore.categories[0]
       const params = {'category_id': defaultCategory.id, 'is_new': defaultCategory.new_item}
 
       SnippsAPI.categorySnippets(params, (data) => {
@@ -37,7 +36,7 @@ const SnippetCategories = observer((
 
   const handleOnCategoryDeleteCallback = (snippetCategoryIndex) => {
     categoryStore.removeCategoryByIndex(snippetCategoryIndex)
-    loadDefaultAfterDelete()
+    loadDefaultSnippetCategoryAfterDelete()
   }
 
   const handleLoadCategoryLabelsCallback = (items) => snippetStore.loadLabelsAndSelectedObject(items)
@@ -48,7 +47,7 @@ const SnippetCategories = observer((
       key={i.id}
       category={i}
       categoryIndex={index}
-      is_active={index === categoryStore.activeCategory}
+      is_active={index === categoryStore.activeCategoryIndex}
       handleOnCategoryClickCallback={handleOnCategoryClickCallback}
       handleOnCategoryDeleteCallback={handleOnCategoryDeleteCallback}
       handleLoadCategoryLabelsCallback={handleLoadCategoryLabelsCallback}
@@ -58,7 +57,7 @@ const SnippetCategories = observer((
   return (
     <>
       <div className="pt-2">
-        {categoryStore.categories.length > 0 ? categoryItems : <NoItems label={"No categories added"}/>}
+        {categoryStore.categories.length > 0 ? categoryItems : <NoItems label={"No categories"}/>}
       </div>
     </>
   )

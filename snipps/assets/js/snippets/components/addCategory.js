@@ -7,7 +7,6 @@ import {
 } from "mdb-react-ui-kit";
 
 
-
 const AddSnippetCategory = (
   {
     store: {categoryStore}

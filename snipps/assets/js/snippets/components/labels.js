@@ -28,7 +28,7 @@ const SnippetLabels = observer((
   return (
     <>
       <div className="pt-2">
-        {snippetStore.labels.length > 0 ? labels : <NoItems label={"No Snippets"}/>}
+        {snippetStore?.labels?.length > 0 ? labels : <NoItems label={"No Snippets"}/>}
       </div>
     </>
   )

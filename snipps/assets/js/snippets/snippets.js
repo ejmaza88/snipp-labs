@@ -35,8 +35,8 @@ function App(
     snippetStore.loadLabelsAndSelectedObject(initSelectedSnippets)
 
     // update the 'active' Category and Label if arrays are NOT empty
-    if (categories.length > 0) categoryStore.updateActiveSnippetCategoryId(categories[0].id)
-    if (initSelectedSnippets.length > 0) snippetStore.updateActiveLabelId(initSelectedSnippets[0].id)
+    if (categories?.length > 0) categoryStore.updateActiveSnippetCategoryId(categories[0].id)
+    if (initSelectedSnippets?.length > 0) snippetStore.updateActiveLabelId(initSelectedSnippets[0].id)
   })
 
   return (

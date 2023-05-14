@@ -68,7 +68,7 @@ export default class SnippetStore {
 
   loadLabelsAndSelectedObject = (allLabelObjects) => {
     this.loadLabelsArray(allLabelObjects)
-    this.loadSelectedLabelObject(allLabelObjects[0] || {})
+    this.loadSelectedLabelObject(allLabelObjects ? allLabelObjects[0] : {})
   }
 
   updateActiveLabelId = (labelId) => this.activeLabelId = labelId

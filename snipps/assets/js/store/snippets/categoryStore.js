@@ -1,20 +1,22 @@
 import {
   makeObservable,
   observable,
-  action
+  action,
+  // toJS,
 } from "mobx"
 
 
 export default class CategoryStore {
   categories = []
-  activeCategory = 0
+  activeCategoryIndex = 0
   activeCategoryId = -1
+  selectedCategory = {}
 
   constructor() {
     makeObservable(this, {
       // observables
       categories: observable,
-      activeCategory: observable,
+      activeCategoryIndex: observable,
       activeCategoryId: observable,
 
       // actions
@@ -23,13 +25,21 @@ export default class CategoryStore {
       updateActiveSnippetCategory: action,
       updateActiveSnippetCategoryId: action,
       removeCategoryByIndex: action,
+      updateSelectedCategory: action,
+      handleCategoryClick: action,
     })
   }
 
   updateActiveSnippetCategory = (snippetCategoryIndex) => {
     const {new_item, ...others} = this.categories[snippetCategoryIndex]
     if (new_item) this.categories.splice(snippetCategoryIndex, 1, {new_item: false, ...others})  // remove css
-    this.activeCategory = snippetCategoryIndex // update active (selected category)
+    this.activeCategoryIndex = snippetCategoryIndex // update active (selected category)
+  }
+
+  handleCategoryClick = (categoryIndex, categoryId) => {
+    this.updateActiveSnippetCategory(categoryIndex)
+    this.updateActiveSnippetCategoryId(categoryId)
+    this.updateSelectedCategory(this.categories[categoryIndex])
   }
 
   loadCategoriesArray = allCategories => this.categories = allCategories
@@ -39,4 +49,6 @@ export default class CategoryStore {
   updateActiveSnippetCategoryId = snippetCategoryId => this.activeCategoryId = snippetCategoryId
 
   removeCategoryByIndex = snippetCategoryIndex => this.categories.splice(snippetCategoryIndex, 1)
+
+  updateSelectedCategory = categoryObject => this.selectedCategory = categoryObject
 }

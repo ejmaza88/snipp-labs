@@ -1,15 +1,16 @@
 import React from 'react';
-import { observer } from "mobx-react-lite";
+import {observer} from "mobx-react-lite";
 import CategoryItem from "./categoryItem";
 import SnippsAPI from "../../helpers/network"
+import NoItems from "../../shared/noItems";
 // import { toJS } from "mobx";
 
 
-const CategoryList = observer( (props) => {
+const CategoryList = observer((props) => {
 
-  const { categoryStore, linqStore } = props.store
+  const {categoryStore, linqStore} = props.store
 
-  const makeCategoryActiveFunc = (index, itemId) => {
+  const makeCategoryActiveCallback = (index, itemId) => {
     categoryStore.updateActiveItem(index)
     categoryStore.updateActiveItemId(itemId)
   }
@@ -32,43 +33,34 @@ const CategoryList = observer( (props) => {
   }
 
   // const deleteCategory = (index) => categoryStore.deleteItem(index)
-  const deleteCategoryFunc = (index) => {
+  const deleteCategoryCallback = (index) => {
     categoryStore.deleteItem(index)
     loadDefaultAfterDelete()
   }
-  const loadLinqItemsFunc = (items) => linqStore.loadFromArray(items)
 
+  const loadLinqItemsCallback = (items) => linqStore.loadFromArray(items)
 
   // creates list of categories to be displayed
-  const categoryItems = categoryStore.items && categoryStore.items.map((i, index) => {
-    return (
-      <CategoryItem
-        key={i.id}
-        item={i}
-        itemIndex={index}
-        active={index === categoryStore.activeItem}
-        makeCategoryActiveFunc={makeCategoryActiveFunc}
-        deleteCategoryFunc={deleteCategoryFunc}
-        loadLinqItemsFunc={loadLinqItemsFunc}
-      />
-    )
-  })
+  const categoryItems = categoryStore.items && categoryStore.items.map((i, index) => (
+    <CategoryItem
+      key={i.id}
+      item={i}
+      itemIndex={index}
+      active={index === categoryStore.activeItem}
+      makeCategoryActiveCallback={makeCategoryActiveCallback}
+      deleteCategoryCallback={deleteCategoryCallback}
+      loadLinqItemsCallback={loadLinqItemsCallback}
+    />
+  ))
 
   return (
     <>
       <div className='mb-3'>
-        {categoryStore.items.length > 0 ? categoryItems : <NoCategories />}
+        {categoryStore.items.length > 0 ? categoryItems : <NoItems label={"No categories added"}/>}
       </div>
     </>
   )
 })
-
-
-const NoCategories = () => {
-  // Default to display if no categories exist
-  return <div className='small'>No categories added</div>
-}
-
 
 export {
   CategoryList

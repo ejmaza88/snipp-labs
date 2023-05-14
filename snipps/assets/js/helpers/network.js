@@ -1,5 +1,6 @@
 import axios from "axios";
 import { getCSRFtoken } from "./helpers";
+// import alert from "bootstrap/js/src/alert";
 
 
 // set token header
@@ -116,6 +117,37 @@ const linqSearch = (params, callback) => {
 }
 
 
+/*
+*
+*   SNIPPETS NETWORK API
+*
+* */
+const snippetCategoryAdd = (data, callback) => {
+  POST('/api/snippets/add_category', data, callback)
+}
+
+const updateSnippet = (data, callback) => {
+  PUT('/api/snippets/update_snippet', data, callback)
+}
+
+const snippetCategoryDelete = (data, callback) => {
+  POST('/api/snippets/delete_category', data, callback)
+}
+
+const categorySnippets = (params, callback) => {
+  GET('/api/snippets/get_category_snippets', params, callback)
+}
+
+const snippetLabelAdd = (params, callback) => {
+  POST('/api/snippets/add_label', params, callback)
+}
+
+const snippetLabelDelete = (data, callback) => {
+  PUT('/api/snippets/delete_label', data, callback)
+}
+
+
+
 export default {
   categoryAdd,
   categoryDelete,
@@ -124,4 +156,10 @@ export default {
   linqDelete,
   linqUpdate,
   linqSearch,
+  snippetCategoryAdd,
+  updateSnippet,
+  snippetCategoryDelete,
+  categorySnippets,
+  snippetLabelAdd,
+  snippetLabelDelete,
 }

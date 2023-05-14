@@ -25,13 +25,13 @@ export const getCSRFtoken = () => Cookies.get(TOKEN)
   When a new category is added, a css class will be added to make it
   stand out, when the user clicks the category name remove the class
  */
-export const removeNewItemClass = (elmentId, className) => (
-  document.getElementById(elmentId).classList.remove(className)
+export const removeNewItemClass = (elementId) => (
+  document.getElementById(elementId).classList.remove("text-warning")
 )
 
 
 // Confirmation
-export const confirmation = (message, onOk, onCancel) => {
+export const confirmation = (message, onOkCallback, onCancel) => {
 
   return (
     confirmAlert({
@@ -41,7 +41,7 @@ export const confirmation = (message, onOk, onCancel) => {
         {
           label: 'Delete',
           onClick: () => {
-            onOk()
+            onOkCallback()
           },
           className: 'btn btn-success'
         },
@@ -73,4 +73,14 @@ export const confirmation = (message, onOk, onCancel) => {
       // overlayClassName: 'overlay-custom-class-name'
     })
   )
+}
+
+
+// get item index and insert in the array
+export const getItemIndex = (itemName, itemsArray) => {
+  const items = itemsArray
+  items.push(itemName)
+
+  // sort the list, ignore case (upper, lower) and find index of new item
+  return items.sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase())).indexOf(itemName)
 }

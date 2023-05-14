@@ -45,6 +45,7 @@ const AddForm = observer( (props) => {
   }
 
   // get item index and insert in the array
+  // TODO: user "getItemIndex" from helpers.js
   const itemIndex = (itemName) => {
     const items = categoryStore.items.map(i => i.name)
     items.push(itemName)
